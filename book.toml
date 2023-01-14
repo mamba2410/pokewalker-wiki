@@ -1,0 +1,13 @@
+[book]
+authors = ["Mamba2410"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Pokewalker Wiki"
+
+[build]
+build-dir = "pokewalker"
+
+[output.html]
+site-url = "/pokewalker/"
+
