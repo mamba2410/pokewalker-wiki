@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Data Structures - Pokewalker Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Walk Start</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Walk End</div></li></ol></li><li class="chapter-item expanded "><a href="structs.html" class="active"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Pokewalker Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="structures"><a class="header" href="#structures">Structures</a></h1>
+<h2 id="walker"><a class="header" href="#walker">Walker</a></h2>
+<pre><code class="language-c">/*
+ *  size: 0x68 = 104 bytes
+ *  Dmitry: struct IdentityData
+ */
+typedef struct {
+    /* +0x00 */ uint32_t le_unk0;
+    /* +0x04 */ uint32_t le_unk1;
+    /* +0x08 */ uint16_t le_unk2;
+    /* +0x0a */ uint16_t le_unk3;
+    /* +0x0c */ uint16_t le_tid;
+    /* +0x0e */ uint16_t le_sid;
+    /* +0x10 */ unique_identity_data_t identity_data;
+    /* +0x38 */ event_bitmap_t event_bitmap;
+    /* +0x48 */ uint16_t le_trainer_name[8];
+    /* +0x58 */ uint8_t unk4[3];
+    /* +0x5b */ uint8_t flags;
+    /* +0x5c */ uint8_t protocol_ver;
+    /* +0x5d */ uint8_t unk5;
+    /* +0x5e */ uint8_t protocol_subver;
+    /* +0x5f */ uint8_t unk8;
+    /* +0x60 */ uint32_t be_last_sync;
+    /* +0x64 */ uint32_t be_step_count;
+} walker_info_t;
+
+/*
+ *  size: 0x18 = 24 bytes
+ *  dmitry: struct HealthData
+ */
+typedef struct {    // strut HealthData
+    /* +0x00 */ uint32_t be_total_steps;
+    /* +0x04 */ uint32_t be_today_steps;
+    /* +0x08 */ uint32_t be_last_sync;
+    /* +0x0c */ uint16_t be_total_days;
+    /* +0x0e */ uint16_t be_current_watts;
+    /* +0x10 */ uint8_t unk[4];
+    /* +0x14 */ uint8_t padding[3];
+    /* +0x17 */ uint8_t settings;
+} health_data_t;
+
+/*
+ *  size: 64 bytes
+ *  dmitry: struct LcdConfigCmds
+ */
+typedef struct {
+    uint8_t flags;
+    uint8_t commands[0x3f];
+} lcd_config_t;
+
+/*
+ *  size: 256 bytes
+ *  dmitry: RELIABLE_DATA
+ */
+typedef struct {
+    uint8_t factory_data[3];
+    unique_identity_data_t unique_data;
+    uint8_t padding_1;
+    lcd_config_t lcd_config;
+    uint8_t padding_2; // random 0xbf byte?
+    walker_info_t walker_info;
+    uint8_t padding_3;
+    health_data_t health_data;
+    uint8_t padding_4;
+    uint8_t copy_marker;
+    uint8_t padding[16];
+} reliable_data_t;
+
+/*
+ *  size: 1 byte
+ *
+ */
+typedef struct {
+    uint8_t stamp_heart: 1;
+    uint8_t stamp_space: 1;
+    uint8_t stamp_diamond: 1;
+    uint8_t stamp_club: 1;
+    uint8_t special_map: 1;
+    uint8_t event_pokemon: 1;
+    uint8_t evet_item: 1;
+    uint8_t special_route: 1;
+} special_inventory_t;
+
+</code></pre>
+<h2 id="pokemon"><a class="header" href="#pokemon">Pokemon</a></h2>
+<pre><code class="language-c">/*
+ *  size: 0x38 = 56 bytes
+ *  dmitry: struct PeerPlayData
+ */
+typedef struct {    // Dmitry struct PeerPlayData
+    /* +0x00 */ uint32_t le_current_steps;
+    /* +0x04 */ uint16_t le_current_watts;
+    /* +0x06 */ uint8_t padding[2];
+    /* +0x08 */ uint32_t le_unk0;
+    /* +0x0c */ uint16_t le_unk2;
+    /* +0x0e */ uint16_t le_species;
+    /* +0x10 */ uint16_t pokemon_name[11];
+    /* +0x26 */ uint16_t trainer_name[8];
+    /* +0x36 */ uint8_t pokemon_flags_1;
+    /* +0x37 */ uint8_t pokemon_flags_2;
+} peer_play_data_t;
+
+/*
+ *  size: 16 bytes
+ *  dmitry: struct PokemonSummary
+ */
+typedef struct {
+    /* +0x00 */ uint16_t le_species;
+    /* +0x02 */ uint16_t le_held_item;
+    /* +0x04 */ uint16_t le_moves[4];
+    /* +0x0c */ uint8_t level;
+    /* +0x0d */ uint8_t pokemon_flags_1;    // [0..5] = variant (spinda, arceus, unown, etc.) [6] = female
+    /* +0x0e */ uint8_t pokemon_flags_2;    // [0] = has form, [1] = shiny
+    /* +0x0f */ uint8_t padding;
+} pokemon_summary_t;
+
+/*
+ *  size: 0x38 = 56 bytes
+ *  dmitry: struct TeamPokeData
+ */
+typedef struct {
+    /* +0x00 */ uint16_t le_species;
+    /* +0x02 */ uint16_t le_held_item;
+    /* +0x04 */ uint16_t le_moves[4];
+    /* +0x0c */ uint16_t le_ot_tid;
+    /* +0x0e */ uint16_t le_ot_sid;
+    /* +0x10 */ uint32_t le_pid;
+    /* +0x14 */ uint32_t ivs;   // packed to 5-bits each
+    /* +0x18 */ uint8_t evs[6];
+    /* +0x1e */ uint8_t pokemon_flags_1;
+    /* +0x1f */ uint8_t source_game;
+    /* +0x20 */ uint8_t ability;
+    /* +0x21 */ uint8_t happiness;
+    /* +0x22 */ uint8_t level;
+    /* +0x23 */ uint8_t padding;
+    /* +0x24 */ uint16_t nickname[10];
+} pokemon_info_t;
+
+/*
+ *  size: 0x2c = 44 bytes
+ *  dmitry: struct EventPokeExtraData
+ */
+typedef struct {
+    /* +0x00 */ uint32_t le_unk0;
+    /* +0x04 */ uint16_t le_ot_tid;
+    /* +0x06 */ uint16_t le_ot_sid;
+    /* +0x08 */ uint16_t le_unk1;
+    /* +0x0a */ uint16_t le_location_met;
+    /* +0x0c */ uint16_t le_unk2;
+    /* +0x0e */ uint16_t ot_name[8];
+    /* +0x1e */ uint8_t encounter_type;
+    /* +0x1f */ uint8_t ability;
+    /* +0x20 */ uint16_t le_pokeball_item;
+    /* +0x22 */ uint8_t unk3[10];
+} special_pokemon_info_t;
+
+</code></pre>
+<p>Note: <code>special_pokemon_info_t</code> cannot contain PID because ability, gender, shininess, spinda spots all depend on PID.
+So PID must be generated/inferred from the data given.
+Unsure if it's random each time, or if the same gifted pokemon gives the same PID.
+The <code>le_unk1</code> and <code>le_unk2</code> change PV somehow, since I can see nature and characteristics changes.
+Nothing seems to grant ribbons, marks or pokerus.</p>
+<h2 id="routes"><a class="header" href="#routes">Routes</a></h2>
+<pre><code class="language-c">
+/*
+ *  size: 0xbe = 190 bytes
+ *  dmitry: struct RouteInfo
+ */
+typedef struct {
+    /* +0x00 */ pokemon_summary_t pokemon_summary;
+    /* +0x10 */ uint16_t pokemon_nickname[11];
+    /* +0x26 */ uint8_t pokemon_happiness;
+    /* +0x27 */ uint8_t route_image_index;
+    /* +0x28 */ uint16_t route_name[21];
+    /* +0x52 */ pokemon_summary_t route_pokemon[3];
+    /* +0x82 */ uint16_t le_route_pokemon_steps[3];
+    /* +0x88 */ uint8_t route_pokemon_percent[3];
+    /* +0x8b */ uint8_t padding;
+    /* +0x8c */ uint16_t le_route_items[10];
+    /* +0xa0 */ uint16_t le_route_item_steps[10];
+    /* +0xb4 */ uint8_t route_item_percent[10];
+} route_info_t;
+
+typedef struct {
+    uint8_t item_info[6];
+    uint8_t route_image_index;
+    uint8_t padding_1;
+    pokemon_summary_t special_pokemon;
+    special_pokemon_info_t special_pokemon_extra;
+    uint16_t le_special_pokemon_steps;
+    uint8_t special_pokemon_percent;
+    uint8_t padding_2;
+    uint16_t le_special_item;
+    uint16_t le_special_item_steps;
+    uint8_t special_item_percent;
+    uint8_t padding_3[3];
+    uint16_t route_name[21];
+    uint8_t pokemon_event_number;
+    uint8_t item_event_number;
+    uint8_t special_pokemon_sprite_data[0x170]; // should be 0x180 bytes, truncated
+    uint8_t special_pokemon_name_image[0x140];
+    uint8_t special_area_icon[0xc0];
+    uint8_t special_area_name_image[0x140];
+    uint8_t special_item_name_image[0x180];
+} special_route_info_t;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="definitions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="eeprom_map.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="definitions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="eeprom_map.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
