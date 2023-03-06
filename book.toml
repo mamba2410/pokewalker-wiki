@@ -10,4 +10,5 @@ build-dir = "pokewalker"
 
 [output.html]
 site-url = "/pokewalker/"
+additional-css = ["fixup.css"]
 

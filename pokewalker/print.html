@@ -30,9 +30,11 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="fixup.css">
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Walk Start</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Walk End</div></li></ol></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li></ol></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -151,6 +153,76 @@
 <li><code>EVENT_POKEMON</code> is the pokemon gifted as an event by <code>CMD_C2</code>.</li>
 <li><code>SPECIAL_ROUTE_POKEMON</code> is the extra pokemon on the special route. Stored in <code>special_route_info_t.special_pokemon</code>.</li>
 <li><code>ROUTE_POKEMON</code> are the three regular route-available pokemon. Stored in <code>route_info_t.route_pokemon[]</code>.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="walk-start"><a class="header" href="#walk-start">Walk Start</a></h1>
+<h2 id="what-the-walker-does"><a class="header" href="#what-the-walker-does">What the walker does</a></h2>
+<ul>
+<li>Start walk action (after 0x5a)
+<ul>
+<li>Write 0xa5 to eeprom reliable data area copy markers</li>
+<li>copy 0x2900 bytes from eeprom 0xd700 to 0x8f00</li>
+<li>copy 0x280 bytes ftin eeprom 0xd480 to 0xcc00 (my team data)</li>
+<li>clears copy marker in eeprom reliable data area</li>
+<li>zero event log (same as walk start)</li>
+<li>zero peer team data, 0x1568 bytes of eeprom at 0xde24</li>
+<li>clear current watts</li>
+<li>write ram cache health data to eeprom</li>
+<li>reads walker_info_t from eeprom</li>
+<li>set walker status flag bits [0..1]</li>
+<li>sets unk[0..3] in walker_info_t</li>
+<li>write walker_info_t to eeprom</li>
+<li>sets up walk start log event</li>
+<li>writes walk start log event</li>
+<li>clears obtained items/pokemon/peer items</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="walk-end"><a class="header" href="#walk-end">Walk End</a></h1>
+<h2 id="procedure"><a class="header" href="#procedure">Procedure</a></h2>
+<ul>
+<li>Normal handshake, DS asserts master.</li>
+<li>DS sends <code>CMD_IDENTITY_REQ 0x20</code>, no data</li>
+<li>Walker sends <code>CMD_IDENTITY_RSP 0x22</code>, contains <code>walker_info_t (IdentityData)</code></li>
+<li>DS sends <code>0x40</code>, contains <code>walker_info_t (IdentityData)</code> idk what to do with it</li>
+<li>Walker sends <code>0x42</code>, no data. Strange since this is apparently <code>CMD_IDENTITY_SEND_ALIAS1</code></li>
+<li>DS does a bunch of reads.</li>
+<li>DS ping</li>
+<li>Walker pong</li>
+<li>DS sends <code>CMD_WALK_END_REQ 0x4e</code></li>
+<li>Walker sends <code>CMD_WALK_END_RSP 0x50</code></li>
+<li>End of connection</li>
+</ul>
+<h2 id="what-the-walker-does-1"><a class="header" href="#what-the-walker-does-1">What the walker does</a></h2>
+<ul>
+<li>End walk action (after 0x4e)
+<ul>
+<li>clear special route bit in <code>RamCache_settingsByte</code></li>
+<li>clear walker has poke bit in <code>walker_status_flags</code></li>
+<li>set log write pointer to top of stack</li>
+<li>set current watts to zero</li>
+<li>copy ram health data to reliable <code>HEALTH_DATA_1/2</code></li>
+<li>reads <code>IDENTITY_DATA_1/2</code></li>
+<li>zeros <code>walker_info_t.unk1, unk3, flags:[0..1]</code></li>
+<li>writes to <code>IDENTITY_DATA_1/2</code></li>
+<li>zeros 0x64 bytes of eeprom at 0xcf0c (obtained items/pokemon/peer items)</li>
+<li>'zeros' 24 elements, each size 0x88 bytes, in eeprom starting at 0xcf0c (see eventLogInvalidate:0x188c)</li>
+<li>zeros 0x6c8 bytes of eeprom at 0xb800 (event data)</li>
+<li>zeros 0x1568 bytes of eeprom at 0xde24 (met peer data)</li>
+<li>zeros 0x10 bytes of eeprom at 0x8f00 (current pokemon summary)</li>
+</ul>
+</li>
+</ul>
+<h2 id="ds-checks"><a class="header" href="#ds-checks">DS checks</a></h2>
+<p>In order for the DS to accept the walk end, the eeprom needs to contain:</p>
+<ul>
+<li>valid <code>walker_info_t (IdentityData)</code>
+<ul>
+<li><code>protocol_ver = 2</code>, <code>protocol_subver=0</code></li>
+<li><code>le_unk1=1</code>, <code>le_unk3=7</code></li>
+<li>correct <code>unique_identity_data_t</code></li>
+</ul>
+</li>
+<li>The correct species in <code>route_info_t.pomeon_summary.le_species</code></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="structures"><a class="header" href="#structures">Structures</a></h1>
 <h2 id="walker"><a class="header" href="#walker">Walker</a></h2>
@@ -236,6 +308,11 @@ typedef struct {
 } special_inventory_t;
 
 </code></pre>
+<p>Notes:</p>
+<ul>
+<li>Walker refuses walk end when walker_info_t.le_unk{1,3} are not {1,7} respectively, stating &quot;not the
+correct pokewalker&quot;</li>
+</ul>
 <h2 id="pokemon"><a class="header" href="#pokemon">Pokemon</a></h2>
 <pre><code class="language-c">/*
  *  size: 0x38 = 56 bytes
@@ -357,6 +434,33 @@ typedef struct {
     uint8_t special_area_name_image[0x140];
     uint8_t special_item_name_image[0x180];
 } special_route_info_t;
+</code></pre>
+<h2 id="logs"><a class="header" href="#logs">Logs</a></h2>
+<pre><code class="language-c">/*
+ *  size: 0x5e = 94 bytes
+ *  dmitry: struct EventLogItem
+ */
+typedef struct {
+    /* 0x00 */ uint32_t be_time;
+    /* 0x04 */ uint32_t le_unk0;
+    /* 0x08 */ uint16_t le_unk2;
+    /* 0x0a */ uint16_t le_our_species;
+    /* 0x0c */ uint16_t le_other_species;
+    /* 0x0e */ uint16_t le_extra;
+    /* 0x10 */ uint16_t other_trainer_name[8];
+    /* 0x20 */ uint16_t our_pokemon_name[11];
+    /* 0x36 */ uint16_t other_pokemon_name[11];
+    /* 0x4c */ uint8_t  route_image_index;
+    /* 0x4d */ uint8_t  pokemon_friendship;
+    /* 0x4e */ uint16_t be_our_watts;
+    /* 0x50 */ uint16_t be_other_watts;
+    /* 0x52 */ uint32_t be_steps;
+    /* 0x56 */ uint32_t be_other_steps;
+    /* 0x5a */ uint8_t  event_type;
+    /* 0x5b */ uint8_t  our_pokemon_flags;
+    /* 0x5c */ uint8_t  other_pokemon_flags;
+    /* 0x5d */ uint8_t  padding;
+} event_log_item_t;
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="eeprom-map"><a class="header" href="#eeprom-map">EEPROM Map</a></h1>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">name</th><th style="text-align: left">addr</th><th style="text-align: right">size</th><th style="text-align: left">comments</th><th style="text-align: left">changed?</th></tr></thead><tbody>
@@ -623,5 +727,6 @@ typedef struct {
         });
         </script>
 
+    </div>
     </body>
 </html>

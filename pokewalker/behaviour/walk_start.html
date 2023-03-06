@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Picowalker Hardware Alternatives - Pokewalker Wiki</title>
+        <title>Walk Start - Pokewalker Wiki</title>
 
 
         <!-- Custom HTML head -->
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="../definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="../behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li></ol></li><li class="chapter-item expanded "><a href="../structs.html"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="../eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../picowalker/hardware.html" class="active"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="../definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../behaviour/walk_start.html" class="active"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="../behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li></ol></li><li class="chapter-item expanded "><a href="../structs.html"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="../eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,16 +143,41 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="picowalker-hardware-alternatives"><a class="header" href="#picowalker-hardware-alternatives">Picowalker Hardware Alternatives</a></h1>
+                        <h1 id="walk-start"><a class="header" href="#walk-start">Walk Start</a></h1>
+<h2 id="what-the-walker-does"><a class="header" href="#what-the-walker-does">What the walker does</a></h2>
+<ul>
+<li>Start walk action (after 0x5a)
+<ul>
+<li>Write 0xa5 to eeprom reliable data area copy markers</li>
+<li>copy 0x2900 bytes from eeprom 0xd700 to 0x8f00</li>
+<li>copy 0x280 bytes ftin eeprom 0xd480 to 0xcc00 (my team data)</li>
+<li>clears copy marker in eeprom reliable data area</li>
+<li>zero event log (same as walk start)</li>
+<li>zero peer team data, 0x1568 bytes of eeprom at 0xde24</li>
+<li>clear current watts</li>
+<li>write ram cache health data to eeprom</li>
+<li>reads walker_info_t from eeprom</li>
+<li>set walker status flag bits [0..1]</li>
+<li>sets unk[0..3] in walker_info_t</li>
+<li>write walker_info_t to eeprom</li>
+<li>sets up walk start log event</li>
+<li>writes walk start log event</li>
+<li>clears obtained items/pokemon/peer items</li>
+</ul>
+</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../eeprom_map.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../definitions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next" href="../behaviour/walk_end.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -160,10 +185,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../eeprom_map.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../definitions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next" href="../behaviour/walk_end.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
