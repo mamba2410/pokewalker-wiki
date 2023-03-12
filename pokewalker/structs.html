@@ -71,10 +71,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -82,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li></ol></li><li class="chapter-item expanded "><a href="structs.html" class="active"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li><li class="chapter-item expanded "><a href="behaviour/event_log.html"><strong aria-hidden="true">2.3.</strong> Event Logging</a></li></ol></li><li class="chapter-item expanded "><a href="structs.html" class="active"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -196,19 +198,23 @@ typedef struct {
 /*
  *  size: 256 bytes
  *  dmitry: RELIABLE_DATA
+ *  
+ *  Warning: gcc will add padding by default
+ *  since members aren't aligned
  */
 typedef struct {
-    uint8_t factory_data[3];
-    unique_identity_data_t unique_data;
-    uint8_t padding_1;
-    lcd_config_t lcd_config;
-    uint8_t padding_2; // random 0xbf byte?
-    walker_info_t walker_info;
-    uint8_t padding_3;
-    health_data_t health_data;
-    uint8_t padding_4;
-    uint8_t copy_marker;
-    uint8_t padding[16];
+    /* +0x00 */ uint8_t factory_data[2];
+    /* +0x02 */ uint8_t factory_data_checksum;
+    /* +0x03 */ unique_identity_data_t unique_data;
+    /* +0x2b */ uint8_t unique_data_checksum;
+    /* +0x2c */ lcd_config_t lcd_config;
+    /* +0x6c */ uint8_t lcd_config_checksum;
+    /* +0x6d */ walker_info_t walker_info;
+    /* +0xd5 */ uint8_t walker_info_checksum;
+    /* +0xd6 */ health_data_t health_data;
+    /* +0xee */ uint8_t health_data_checksum;
+    /* +0xef */ uint8_t copy_marker;
+    /* +0xf0 */ uint8_t padding[16];
 } reliable_data_t;
 
 /*
@@ -311,7 +317,17 @@ Unsure if it's random each time, or if the same gifted pokemon gives the same PI
 The <code>le_unk1</code> and <code>le_unk2</code> change PV somehow, since I can see nature and characteristics changes.
 Nothing seems to grant ribbons, marks or pokerus.</p>
 <h2 id="routes"><a class="header" href="#routes">Routes</a></h2>
-<pre><code class="language-c">
+<pre><code class="language-c">typedef enum {
+    /* 0x00 */ ROUTE_IMAGE_FIELD_AND_TREES,
+    /* 0x01 */ ROUTE_IMAGE_FOREST_AND_TREES,
+    /* 0x02 */ ROUTE_IMAGE_SUBURBS,
+    /* 0x03 */ ROUTE_IMAGE_URBAN,
+    /* 0x04 */ ROUTE_IMAGE_MOUNTAIN,
+    /* 0x05 */ ROUTE_IMAGE_CAVE,
+    /* 0x06 */ ROUTE_IMAGE_LAKE,
+    /* 0x07 */ ROUTE_IMAGE_BEACH,
+} route_image_index_t;
+
 /*
  *  size: 0xbe = 190 bytes
  *  dmitry: struct RouteInfo
@@ -331,33 +347,38 @@ typedef struct {
     /* +0xb4 */ uint8_t route_item_percent[10];
 } route_info_t;
 
+/*
+ *  size: 0x6ac = 1708 bytes
+ *  dmitry: struct SpecialRoute
+ */
 typedef struct {
-    uint8_t item_info[6];
-    uint8_t route_image_index;
-    uint8_t padding_1;
-    pokemon_summary_t special_pokemon;
-    special_pokemon_info_t special_pokemon_extra;
-    uint16_t le_special_pokemon_steps;
-    uint8_t special_pokemon_percent;
-    uint8_t padding_2;
-    uint16_t le_special_item;
-    uint16_t le_special_item_steps;
-    uint8_t special_item_percent;
-    uint8_t padding_3[3];
-    uint16_t route_name[21];
-    uint8_t pokemon_event_number;
-    uint8_t item_event_number;
-    uint8_t special_pokemon_sprite_data[0x170]; // should be 0x180 bytes, truncated
-    uint8_t special_pokemon_name_image[0x140];
-    uint8_t special_area_icon[0xc0];
-    uint8_t special_area_name_image[0x140];
-    uint8_t special_item_name_image[0x180];
+    /* +0x0000 */ uint8_t item_info[6];
+    /* +0x0006 */ uint8_t route_image_index;
+    /* +0x0007 */ uint8_t padding_1;
+    /* +0x0008 */ pokemon_summary_t special_pokemon;
+    /* +0x0018 */ special_pokemon_info_t special_pokemon_extra;
+    /* +0x0044 */ uint16_t le_special_pokemon_steps;
+    /* +0x0046 */ uint8_t special_pokemon_percent;
+    /* +0x0047 */ uint8_t padding_2;
+    /* +0x0048 */ uint16_t le_special_item;
+    /* +0x004a */ uint16_t le_special_item_steps;
+    /* +0x004c */ uint8_t special_item_percent;
+    /* +0x004d */ uint8_t padding_3[3];
+    /* +0x0050 */ uint16_t route_name[21];
+    /* +0x007a */ uint8_t pokemon_event_number;
+    /* +0x007b */ uint8_t item_event_number;
+    /* +0x007c */ uint8_t special_pokemon_sprite_data[0x170]; // should be 0x180 bytes, truncated
+    /* +0x01ec */ uint8_t special_pokemon_name_image[0x140];
+    /* +0x032c */ uint8_t special_area_icon[0xc0];
+    /* +0x03ec */ uint8_t special_area_name_image[0x140];
+    /* +0x052c */ uint8_t special_item_name_image[0x180];
 } special_route_info_t;
 </code></pre>
 <h2 id="logs"><a class="header" href="#logs">Logs</a></h2>
 <pre><code class="language-c">/*
- *  size: 0x5e = 94 bytes
+ *  size: 0x88 = 136 bytes
  *  dmitry: struct EventLogItem
+ *  Modified from dmitry's version
  */
 typedef struct {
     /* 0x00 */ uint32_t be_time;
@@ -369,24 +390,70 @@ typedef struct {
     /* 0x10 */ uint16_t other_trainer_name[8];
     /* 0x20 */ uint16_t our_pokemon_name[11];
     /* 0x36 */ uint16_t other_pokemon_name[11];
-    /* 0x4c */ uint8_t  route_image_index;
-    /* 0x4d */ uint8_t  pokemon_friendship;
-    /* 0x4e */ uint16_t be_our_watts;
-    /* 0x50 */ uint16_t be_other_watts;
-    /* 0x52 */ uint32_t be_steps;
-    /* 0x56 */ uint32_t be_other_steps;
-    /* 0x5a */ uint8_t  event_type;
-    /* 0x5b */ uint8_t  our_pokemon_flags;
-    /* 0x5c */ uint8_t  other_pokemon_flags;
-    /* 0x5d */ uint8_t  padding;
+    /* 0x4c */ uint16_t route_name[21];
+    /* 0x76 */ uint8_t  route_image_index;
+    /* 0x77 */ uint8_t  pokemon_friendship;
+    /* 0x78 */ uint16_t be_our_watts;
+    /* 0x7a */ uint16_t be_other_watts;
+    /* 0x7c */ uint32_t be_steps;
+    /* 0x80 */ uint32_t be_other_steps;
+    /* 0x84 */ uint8_t  event_type;
+    /* 0x85 */ uint8_t  our_pokemon_flags;
+    /* 0x86 */ uint8_t  other_pokemon_flags;
+    /* 0x87 */ uint8_t  padding;
 } event_log_item_t;
+
+
+typedef enum {
+    /* 0x00 */ EVENT_TYPE_EMPTY_ENTRY,
+    /* 0x01 */ EVENT_TYPE_PEER_PLAY_1,
+    /* 0x02 */ EVENT_TYPE_PEER_PLAY_2,
+    /* 0x03 */ EVENT_TYPE_PEER_PLAY_3,
+    /* 0x04 */ EVENT_TYPE_PEER_PLAY_4,
+    /* 0x05 */ EVENT_TYPE_PEER_PLAY_5,
+    /* 0x06 */ EVENT_TYPE_PEER_PLAY_6,
+    /* 0x07 */ EVENT_TYPE_PEER_PLAY_7,
+    /* 0x08 */ EVENT_TYPE_PEER_PLAY_8,
+    /* 0x09 */ EVENT_TYPE_PEER_PLAY_9,
+    /* 0x0a */ EVENT_TYPE_PEER_PLAY_10,
+    /* 0x0b */ EVENT_TYPE_ITEM_DOWSED,
+    /* 0x0c */ EVENT_TYPE_SPECIAL_ITEM_DOWSED,
+    /* 0x0d */ EVENT_TYPE_POKEMON_CAUGHT,
+    /* 0x0e */ EVENT_TYPE_SPECIAL_POKEMON_CAUGHT,
+    /* 0x0f */ EVENT_TYPE_POKEMON_RAN,
+    /* 0x10 */ EVENT_TYPE_POKEMON_LOST,
+    /* 0x11 */ EVENT_TYPE_POKEMON_FOUND_ITEM,
+    /* 0x12 */ EVENT_TYPE_MOOD_HAPPY,
+    /* 0x13 */ EVENT_TYPE_MOOD_RUNNING,
+    /* 0x14 */ EVENT_TYPE_MOOD_LOOKING_AWAY,
+    /* 0x15 */ EVENT_TYPE_MOOD_BORED,
+    /* 0x16 */ EVENT_TYPE_MOOD_GO_HOME,
+    /* 0x17 */ EVENT_TYPE_POKEMON_JOINED,
+    /* 0x18 */ EVENT_TYPE_WALK_ENDED,
+    /* 0x19 */ EVENT_TYPE_WALK_STARTED,
+    /* 0x1a */ EVENT_TYPE_PLAYED_ALOT,
+    /* 0x1b */ EVENT_TYPE_FELL_ASLEEP,
+    /* 0x1c */ EVENT_TYPE_ITEM_GIFTED,
+} event_log_type_t;
+
+
+/*
+ *  size: 0x88 = 136 bytes
+ */
+typedef struct {
+    /* +0x00 */ uint8_t  cmd;
+    /* +0x01 */ uint8_t  extra;
+    /* +0x02 */ uint16_t le_checksum;
+    /* +0x04 */ uint32_t le_session_id;
+    /* +0x08 */ uint8_t  payload[128];
+} pw_packet_t;
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="behaviour/walk_end.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="behaviour/event_log.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -400,7 +467,7 @@ typedef struct {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="behaviour/walk_end.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="behaviour/event_log.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
@@ -411,6 +478,22 @@ typedef struct {
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

@@ -209,13 +209,13 @@
 | OBTAINED_ITEMS | 0xcebc | 12 |  3x route-available items we've dowsed so far. 3x {u16 le item, u16 le unused} | |
 | PEER_PLAY_ITEMS | 0xcec8 | 40 |  10x route-available items we've been gifted by peer play. 10x {u16 le item, u16 le unused} | Y |
 | HISTORIC_STEP_COUNT | 0xcef0 | 28 |  historic step count per day. u32 each, be, [0] is yesterday, [1] is day before, etc... | |
-| EVENT_LOG | 0xcf0c | 3316 |  event log. circularly-written, displayed in time order. 24x struct eventlogitem | |
+| EVENT_LOG | 0xcf0c | 3264 |  event log. circularly-written, displayed in time order. 24x struct eventlogitem | Y |
 | TEAM_DATA_STAGING | 0xd480 | 640 |  team data written here before walk start action. struct teamdata	 | |
-|  | 0xd700 | 10496 | scenario data written here before walk start action. everything that 0x8F00-0xB7FF would have | Y |
+| STAGING_AREA | 0xd700 | 10496 | scenario data written here before walk start action. everything that 0x8F00-0xB7FF would have | Y |
 | CURRENT_PEER_TEAM_DATA | 0xdc00 | 548 |  current peer play peer. struct teamdata. uploaded as part of peer play. later shifted to index [0] at 0xde24 list of peers | |
 | MET_PEER_DATA | 0xde24 | 5480 |  peers we've met. for battle house info. newest element is first. 10x struct teamdata | |
 |  | 0xf38c | 116 |  unused | |
-|  | 0xf400 | 760 | peer play temporary data about peer | Y |
+| PEER_DATA_TEMP | 0xf400 | 760 | peer play temporary data about peer | Y |
 | IMG_CURRENT_PEER_POKEMON_ANIMATED_SMALL | 0xf400 | 384 |  medium pokemon animated image of pokemon we are peer-playing with (never erased) 32x24 x 2 frames | Y |
 | TEXT_CURRENT_PEER_POKEMON_NAME | 0xf580 | 320 |  rendered text name of pokemon we are peer-playing with 80x16 | |
 | CURRENT_PEER_DATA | 0xf6c0 | 56 |  data. struct peerplaydata | |

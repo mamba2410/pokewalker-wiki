@@ -1,5 +1,9 @@
 # Walk Start
 
+## Procedure
+
+- Normal handshake, DS asserts master
+
 ## What the walker does
 
 - Start walk action (after 0x5a)
@@ -19,3 +23,10 @@
     - writes walk start log event
     - clears obtained items/pokemon/peer items
 
+## Log
+
+- calls [logEvent](./event_log.md)
+- e1 = 0x00
+- [sp] = settings byte u8 and settings byte&0x01 u8
+- event type 0x19
+- isOnSpecialRoute = settings byte&0x01

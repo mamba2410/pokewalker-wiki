@@ -1,8 +1,57 @@
-# Structures
+#ifndef PW_TYPES_H
+#define PW_TYPES_H
 
-## Walker
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
 
-```c
+/*
+ *  Pokewalker IR packet.
+ *  Using this mess of a struct to allow for easier
+ *  conversion between the bytes and named fields.
+ *  Can access all bytes with packet.bytes[] or can
+ *  access individual members as c types with their
+ *  field name.
+ *
+ *  Putting the bytes into a "container" shouldn't
+ *  affect their order, just the interpreted value.
+ *  So unless you're doing calcs with the *value*
+ *  of the checksum/session ID then using their
+ *  named fields should be ok.
+ *
+ *  Still, beware of the host architecture!
+ */
+typedef struct {
+    union {
+        struct {
+            uint8_t cmd;
+            uint8_t extra;
+            union {
+                uint8_t  checksum_bytes[2];
+                uint16_t le_checksum;
+            };
+            union {
+                uint8_t  session_id_bytes[4];
+                uint32_t le_session_id;
+            };
+            uint8_t payload[128];
+
+        };
+        uint8_t bytes[0x88];
+    };
+} pw_packet_t;
+
+
+typedef struct {
+    uint8_t data[0x28];
+} unique_identity_data_t;
+
+
+typedef struct {
+    uint8_t data[0x10];
+} event_bitmap_t;
+
+
 /*
  *  size: 0x68 = 104 bytes
  *  Dmitry: struct IdentityData
@@ -42,63 +91,11 @@ typedef struct {    // strut HealthData
     /* +0x17 */ uint8_t settings;
 } health_data_t;
 
-/*
- *  size: 64 bytes
- *  dmitry: struct LcdConfigCmds
- */
 typedef struct {
     uint8_t flags;
     uint8_t commands[0x3f];
 } lcd_config_t;
 
-/*
- *  size: 256 bytes
- *  dmitry: RELIABLE_DATA
- *  
- *  Warning: gcc will add padding by default
- *  since members aren't aligned
- */
-typedef struct {
-    /* +0x00 */ uint8_t factory_data[2];
-    /* +0x02 */ uint8_t factory_data_checksum;
-    /* +0x03 */ unique_identity_data_t unique_data;
-    /* +0x2b */ uint8_t unique_data_checksum;
-    /* +0x2c */ lcd_config_t lcd_config;
-    /* +0x6c */ uint8_t lcd_config_checksum;
-    /* +0x6d */ walker_info_t walker_info;
-    /* +0xd5 */ uint8_t walker_info_checksum;
-    /* +0xd6 */ health_data_t health_data;
-    /* +0xee */ uint8_t health_data_checksum;
-    /* +0xef */ uint8_t copy_marker;
-    /* +0xf0 */ uint8_t padding[16];
-} reliable_data_t;
-
-/*
- *  size: 1 byte
- *
- */
-typedef struct {
-    uint8_t stamp_heart: 1;
-    uint8_t stamp_space: 1;
-    uint8_t stamp_diamond: 1;
-    uint8_t stamp_club: 1;
-    uint8_t special_map: 1;
-    uint8_t event_pokemon: 1;
-    uint8_t evet_item: 1;
-    uint8_t special_route: 1;
-} special_inventory_t;
-
-```
-
-Notes:
-
-- Walker refuses walk end when walker_info_t.le_unk{1,3} are not {1,7} respectively, stating "not the
-  correct pokewalker"
-
-
-## Pokemon
-
-```c
 /*
  *  size: 0x38 = 56 bytes
  *  dmitry: struct PeerPlayData
@@ -170,26 +167,32 @@ typedef struct {
     /* +0x22 */ uint8_t unk3[10];
 } special_pokemon_info_t;
 
-```
-Note: `special_pokemon_info_t` cannot contain PID because ability, gender, shininess, spinda spots all depend on PID.
-So PID must be generated/inferred from the data given.
-Unsure if it's random each time, or if the same gifted pokemon gives the same PID.
-The `le_unk1` and `le_unk2` change PV somehow, since I can see nature and characteristics changes.
-Nothing seems to grant ribbons, marks or pokerus.
+typedef struct __attribute__((packed)) {
+    uint8_t factory_data[2];
+    uint8_t factory_data_checksum;
+    unique_identity_data_t unique_data;
+    uint8_t unique_data_checksum;
+    lcd_config_t lcd_config;
+    uint8_t lcd_config_checksum; // random 0xbf byte?
+    walker_info_t walker_info;
+    uint8_t walker_info_checksum;
+    health_data_t health_data;
+    uint8_t health_data_checksum;
+    uint8_t copy_marker;
+    uint8_t padding[16];
+} reliable_data_t;
 
-## Routes
+typedef struct {
+    uint8_t stamp_heart: 1;
+    uint8_t stamp_space: 1;
+    uint8_t stamp_diamond: 1;
+    uint8_t stamp_club: 1;
+    uint8_t special_map: 1;
+    uint8_t event_pokemon: 1;
+    uint8_t evet_item: 1;
+    uint8_t special_route: 1;
+} special_inventory_t;
 
-```c
-typedef enum {
-    /* 0x00 */ ROUTE_IMAGE_FIELD_AND_TREES,
-    /* 0x01 */ ROUTE_IMAGE_FOREST_AND_TREES,
-    /* 0x02 */ ROUTE_IMAGE_SUBURBS,
-    /* 0x03 */ ROUTE_IMAGE_URBAN,
-    /* 0x04 */ ROUTE_IMAGE_MOUNTAIN,
-    /* 0x05 */ ROUTE_IMAGE_CAVE,
-    /* 0x06 */ ROUTE_IMAGE_LAKE,
-    /* 0x07 */ ROUTE_IMAGE_BEACH,
-} route_image_index_t;
 
 /*
  *  size: 0xbe = 190 bytes
@@ -209,6 +212,7 @@ typedef struct {
     /* +0xa0 */ uint16_t le_route_item_steps[10];
     /* +0xb4 */ uint8_t route_item_percent[10];
 } route_info_t;
+
 
 /*
  *  size: 0x6ac = 1708 bytes
@@ -236,11 +240,7 @@ typedef struct {
     /* +0x03ec */ uint8_t special_area_name_image[0x140];
     /* +0x052c */ uint8_t special_item_name_image[0x180];
 } special_route_info_t;
-```
 
-## Logs
-
-```c
 /*
  *  size: 0x88 = 136 bytes
  *  dmitry: struct EventLogItem
@@ -268,6 +268,7 @@ typedef struct {
     /* 0x86 */ uint8_t  other_pokemon_flags;
     /* 0x87 */ uint8_t  padding;
 } event_log_item_t;
+
 
 
 typedef enum {
@@ -302,16 +303,16 @@ typedef enum {
     /* 0x1c */ EVENT_TYPE_ITEM_GIFTED,
 } event_log_type_t;
 
+typedef enum {
+    /* 0x00 */ ROUTE_IMAGE_FIELD_AND_TREES,
+    /* 0x01 */ ROUTE_IMAGE_FOREST_AND_TREES,
+    /* 0x02 */ ROUTE_IMAGE_SUBURBS,
+    /* 0x03 */ ROUTE_IMAGE_URBAN,
+    /* 0x04 */ ROUTE_IMAGE_MOUNTAIN,
+    /* 0x05 */ ROUTE_IMAGE_CAVE,
+    /* 0x06 */ ROUTE_IMAGE_LAKE,
+    /* 0x07 */ ROUTE_IMAGE_BEACH,
+} route_image_index_t;
 
-/*
- *  size: 0x88 = 136 bytes
- */
-typedef struct {
-    /* +0x00 */ uint8_t  cmd;
-    /* +0x01 */ uint8_t  extra;
-    /* +0x02 */ uint16_t le_checksum;
-    /* +0x04 */ uint32_t le_session_id;
-    /* +0x08 */ uint8_t  payload[128];
-} pw_packet_t;
-```
 
+#endif /* PW_TYPES_H */

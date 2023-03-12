@@ -1,12 +1,13 @@
 # Summary
 
 
-- [General Info](./general/README)
+- [General Info](./general/index.md)
     - [Pokewalker Hardware](./general/hardware.md)
     - [Definitions](./definitions.md)
 - [Behaviour]()
     - [Walk Start](behaviour/walk_start.md)
     - [Walk End](behaviour/walk_end.md)
+    - [Event Logging](behaviour/event_log.md)
 - [Data Structures](./structs.md)
     - [Identification Structures]()
     - [Pokemon Structures]()
