@@ -191,8 +191,8 @@
 | SPECIAL_ITEM_PERCENT_CHANCE | 0xbf4c | 1 |  percent chance to dowse this item on route after step minimum met	 | |
 |  | 0xbf4d | 3 |  unused | |
 | SPECIAL_ROUTE_NAME_NINTENDOENC | 0xbf50 | 42 |  routename u16[21] | |
-| SPECIAL_POKEMON_EVENT_INDEX | 0xbf7a | 1 |  "event index" for catching this route's special pokemon	 | |
-| SPECIAL_ITEM_EVENT_INDEX | 0xbf7b | 1 |  "event index" for dowsing this route's special item	 | |
+| SPECIAL_POKEMON_EVENT_INDEX | 0xbf7a | 1 |  "event index" for catching this route's special pokemon (1-127)	 | Y |
+| SPECIAL_ITEM_EVENT_INDEX | 0xbf7b | 1 |  "event index" for dowsing this route's special item (1-127)	 | Y |
 | IMG_SPECIAL_POKEMON_SMALL_ANIMATED | 0xbf7c | 1920 |  special route pokemon animates small sprite. 32 x 24 x 2 frames. should be 0x180 bytes big, but it 0x170. no idea why but confirmed	 | |
 | TEXT_SPECIAL_POKEMON_NAME | 0xc6fc | 320 |  special route pokemon name image 80x16	 | |
 | IMG_SPECIAL_ROUTE_IMAGE | 0xc83c | 192 |  special routes's large image for home screen, like 0x8fbe is for a normal route 32x24	 | |

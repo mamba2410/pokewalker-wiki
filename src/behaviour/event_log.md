@@ -4,7 +4,6 @@
 
 - dmitry's struct is 0x5e bytes, missing route_name
 
-
 ## walker function sig
 
 r0 = TeamAndrouteInfo in ram ptr (0xBE bytes from 0x8f00)
@@ -33,23 +32,22 @@ e1 = extraInfo (eg: item type)
 - (buf+0x85) = (pokemon_flags_1&0x1f) | (buf+0x85)&0xe0, u8
 - (buf+0x85):7 = are we on special route, u8
 - on normal route: (buf+0x76) = route_image_index u8
-- on normal route: (buf+0x4c) = route_name 0x2a bytes (21*u16) 
+- on normal route: (buf+0x4c) = route_name 0x2a bytes (21*u16)
 - on special route: (buf+0x76) = special route_image_index (eeprom:0xbf06) (u8)
 - on special route: (buf+0x4c) = special route_name 0x2a bytes (eeprom:0xbf50)
 - check if we have 1-3:normal_pokemon, 4:special_pokemon, else:no_pokemon (idk)
   - probably for caught pokemon
 - if we were normal pokemeon: (buf+0x0c) = caught species
 - normal pokemon: (buf+0x86) = caught gender/form &0x1f | (buf+0x86)&0xe0 + funky bitfield insert
-- event pokemon: 
+- event pokemon:
   - if log type is 0x0f or 0x10: (buf+0x0c) = (eeprom:bf08) event caught species (u16)
   - else: (buf+0x0c) = (eeprom:ba44)  gifted pokemon species (u16)
 - event pokemon: (buf+0x86) = 1f&(eeprom:bf0d) (should be bf15) special pokemon flags (u8)
-    - also orred with (buf+0x86)&0xe0 + funky bitfield insert
+  - also orred with (buf+0x86)&0xe0 + funky bitfield insert
 - all routes: (no pokemon jumps straight here)
 - write 0x88 bytes to eeprom at `0xcf0c+0x88*idx`
 - increment global index `idx = (idx+1)%23`
 - write total steps to reliable area
-
 
 ## notes on decomp of logPeerPlay
 
@@ -62,6 +60,6 @@ e1 = extraInfo (eg: item type)
 - (buf+0x80) = peer_play+0x00 (peer steps) u32
 - (buf+0x36) = peer_play.nickname 22 bytes (walker copies 24)
 - (buf+0x10) = peer_play.trainer_name 16 bytes (walker copies 18)
-- pushes `(2*number_of_peers_met)&0xff00` u16 to the stack?? 
+- pushes `(2*number_of_peers_met)&0xff00` u16 to the stack??
 - event type is number of peers met so far
 - extra data = route_info.items[n_peers_met] u16:w
