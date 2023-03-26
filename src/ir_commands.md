@@ -1,5 +1,7 @@
 # IR Commands
 
+Taken and modified from [Dmitry.gr's writeup](http://dmitry.gr/?r=05.Projects&proj=28.%20pokewalker#_TOC_34cd8beec5c4813f4d151130632174e7)
+
 | CMD                     | DIR      | NOTES                                                                                                                                                                                                                                                                                                |
 | ----------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 00                      | g2w      | Compressed EEPROM write. Documented at length above. Writes 128 bytes on a 128-byte boundary. "extra" byte is top 8 bits of address. Bottom 8 bits will always be zero. Reply will be CMD_04                                                                                                         |

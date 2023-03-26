@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li><li class="chapter-item expanded "><a href="behaviour/event_log.html"><strong aria-hidden="true">2.3.</strong> Event Logging</a></li></ol></li><li class="chapter-item expanded "><a href="structs.html" class="active"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li><li class="chapter-item expanded "><a href="behaviour/event_log.html"><strong aria-hidden="true">2.3.</strong> Event Logging</a></li><li class="chapter-item expanded "><a href="behaviour/radar_bush_game.html"><strong aria-hidden="true">2.4.</strong> Radar Bush Game</a></li><li class="chapter-item expanded "><a href="behaviour/poke_radar.html"><strong aria-hidden="true">2.5.</strong> PokeRadar</a></li><li class="chapter-item expanded "><a href="behaviour/wild_pokemon_join.html"><strong aria-hidden="true">2.6.</strong> Wild Pokemon Join</a></li><li class="chapter-item expanded "><a href="behaviour/walker_init.html"><strong aria-hidden="true">2.7.</strong> Walker Initialisation</a></li></ol></li><li class="chapter-item expanded "><a href="structs.html" class="active"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><a href="ir_commands.html"><strong aria-hidden="true">5.</strong> IR Commands</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulating the Pokewalker</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li><li class="chapter-item expanded "><a href="programming.html"><strong aria-hidden="true">6.3.</strong> Re-flashing the Walker</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -161,8 +161,9 @@ typedef struct {
     /* +0x10 */ unique_identity_data_t identity_data;
     /* +0x38 */ event_bitmap_t event_bitmap;
     /* +0x48 */ uint16_t le_trainer_name[8];
-    /* +0x58 */ uint8_t unk4[3];
-    /* +0x5b */ uint8_t flags;
+    /* +0x58 */ uint8_t unk4[2];
+    /* +0x5a */ uint8_t event_index;
+    /* +0x5b */ uint8_t flags;              // [0]=init, [1]=has_pokemon, [2]=pokemon_joined, [3..7]=end_of_day_hour
     /* +0x5c */ uint8_t protocol_ver;
     /* +0x5d */ uint8_t unk5;
     /* +0x5e */ uint8_t protocol_subver;
@@ -178,12 +179,14 @@ typedef struct {
 typedef struct {    // strut HealthData
     /* +0x00 */ uint32_t be_total_steps;
     /* +0x04 */ uint32_t be_today_steps;
-    /* +0x08 */ uint32_t be_last_sync;
+    /* +0x08 */ uint32_t be_last_sync;  // seconds since 1 Jan 2001
     /* +0x0c */ uint16_t be_total_days;
     /* +0x0e */ uint16_t be_current_watts;
-    /* +0x10 */ uint8_t unk[4];
-    /* +0x14 */ uint8_t padding[3];
-    /* +0x17 */ uint8_t settings;
+    /* +0x10 */ uint16_t le_walk_minute_counter;    // only used internally
+    /* +0x12 */ uint8_t  steps_this_watt;           // only used internally
+    /* +0x13 */ uint8_t  event_log_write_idx;       // only used internally
+    /* +0x14 */ uint8_t  padding[3];
+    /* +0x17 */ uint8_t  settings; // [0]=special_map, [1..2]=volume, [3..6]=contrast
 } health_data_t;
 
 /*
@@ -436,7 +439,9 @@ typedef enum {
     /* 0x1c */ EVENT_TYPE_ITEM_GIFTED,
 } event_log_type_t;
 
-
+</code></pre>
+<h2 id="ir"><a class="header" href="#ir">IR</a></h2>
+<pre><code class="language-c">
 /*
  *  size: 0x88 = 136 bytes
  */
@@ -453,7 +458,7 @@ typedef struct {
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="behaviour/event_log.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="behaviour/walker_init.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -467,7 +472,7 @@ typedef struct {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="behaviour/event_log.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="behaviour/walker_init.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 

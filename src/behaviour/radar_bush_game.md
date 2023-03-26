@@ -39,4 +39,3 @@
 - substate battle start
   - 4 ticks to black out screen
   - send to battle state
-  

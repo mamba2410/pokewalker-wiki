@@ -85,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li><li class="chapter-item expanded "><a href="behaviour/event_log.html"><strong aria-hidden="true">2.3.</strong> Event Logging</a></li></ol></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> IR Commands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulation</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="general/index.html"><strong aria-hidden="true">1.</strong> General Info</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="general/hardware.html"><strong aria-hidden="true">1.1.</strong> Pokewalker Hardware</a></li><li class="chapter-item expanded "><a href="definitions.html"><strong aria-hidden="true">1.2.</strong> Definitions</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Behaviour</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="behaviour/walk_start.html"><strong aria-hidden="true">2.1.</strong> Walk Start</a></li><li class="chapter-item expanded "><a href="behaviour/walk_end.html"><strong aria-hidden="true">2.2.</strong> Walk End</a></li><li class="chapter-item expanded "><a href="behaviour/event_log.html"><strong aria-hidden="true">2.3.</strong> Event Logging</a></li><li class="chapter-item expanded "><a href="behaviour/radar_bush_game.html"><strong aria-hidden="true">2.4.</strong> Radar Bush Game</a></li><li class="chapter-item expanded "><a href="behaviour/poke_radar.html"><strong aria-hidden="true">2.5.</strong> PokeRadar</a></li><li class="chapter-item expanded "><a href="behaviour/wild_pokemon_join.html"><strong aria-hidden="true">2.6.</strong> Wild Pokemon Join</a></li><li class="chapter-item expanded "><a href="behaviour/walker_init.html"><strong aria-hidden="true">2.7.</strong> Walker Initialisation</a></li></ol></li><li class="chapter-item expanded "><a href="structs.html"><strong aria-hidden="true">3.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Identification Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Pokemon Structures</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Route Structures</div></li></ol></li><li class="chapter-item expanded "><a href="eeprom_map.html"><strong aria-hidden="true">4.</strong> EEPROM Map</a></li><li class="chapter-item expanded "><a href="ir_commands.html"><strong aria-hidden="true">5.</strong> IR Commands</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Manipulating the Pokewalker</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Simulating Peer-play</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Arbitrary Code Execution</div></li><li class="chapter-item expanded "><a href="programming.html"><strong aria-hidden="true">6.3.</strong> Re-flashing the Walker</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Picowalker</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> The Picowalker</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="picowalker/hardware.html"><strong aria-hidden="true">7.1.</strong> Picowalker Hardware Alternatives</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -277,7 +277,7 @@ e1 = extraInfo (eg: item type)
 <li>(buf+0x85) = (pokemon_flags_1&amp;0x1f) | (buf+0x85)&amp;0xe0, u8</li>
 <li>(buf+0x85):7 = are we on special route, u8</li>
 <li>on normal route: (buf+0x76) = route_image_index u8</li>
-<li>on normal route: (buf+0x4c) = route_name 0x2a bytes (21*u16) </li>
+<li>on normal route: (buf+0x4c) = route_name 0x2a bytes (21*u16)</li>
 <li>on special route: (buf+0x76) = special route_image_index (eeprom:0xbf06) (u8)</li>
 <li>on special route: (buf+0x4c) = special route_name 0x2a bytes (eeprom:0xbf50)</li>
 <li>check if we have 1-3:normal_pokemon, 4:special_pokemon, else:no_pokemon (idk)
@@ -287,7 +287,7 @@ e1 = extraInfo (eg: item type)
 </li>
 <li>if we were normal pokemeon: (buf+0x0c) = caught species</li>
 <li>normal pokemon: (buf+0x86) = caught gender/form &amp;0x1f | (buf+0x86)&amp;0xe0 + funky bitfield insert</li>
-<li>event pokemon: 
+<li>event pokemon:
 <ul>
 <li>if log type is 0x0f or 0x10: (buf+0x0c) = (eeprom:bf08) event caught species (u16)</li>
 <li>else: (buf+0x0c) = (eeprom:ba44)  gifted pokemon species (u16)</li>
@@ -314,9 +314,230 @@ e1 = extraInfo (eg: item type)
 <li>(buf+0x80) = peer_play+0x00 (peer steps) u32</li>
 <li>(buf+0x36) = peer_play.nickname 22 bytes (walker copies 24)</li>
 <li>(buf+0x10) = peer_play.trainer_name 16 bytes (walker copies 18)</li>
-<li>pushes <code>(2*number_of_peers_met)&amp;0xff00</code> u16 to the stack?? </li>
+<li>pushes <code>(2*number_of_peers_met)&amp;0xff00</code> u16 to the stack??</li>
 <li>event type is number of peers met so far</li>
 <li>extra data = route_info.items[n_peers_met] u16:w</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="radar-bush-game"><a class="header" href="#radar-bush-game">Radar Bush Game</a></h1>
+<h2 id="walker-behaviour"><a class="header" href="#walker-behaviour">Walker behaviour</a></h2>
+<ul>
+<li>Choose mon
+<ul>
+<li>check for event
+<ul>
+<li>check if we already have mon
+<ul>
+<li>check steps</li>
+<li>check percent</li>
+<li>exclamation level = 3+rand()%2</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>check option a &gt; b &gt; c</li>
+<li>check steps</li>
+<li>check percent (same rand() val)</li>
+<li>exclamation level = 3-idx+rand()%2</li>
+<li>always have at least option c</li>
+</ul>
+</li>
+<li>mark active timer = 5 ticks</li>
+<li>timeout timer = 0x40</li>
+<li>active bush = rand()%4</li>
+<li>substate user choose bush
+<ul>
+<li>dec mark timer</li>
+<li>if mark timer up, dec timeout timer</li>
+<li>on enter, if cursur is on active bush, move to substate handle ok bush</li>
+<li>else move to failed global state</li>
+<li>set message timeout to 10 ticks</li>
+</ul>
+</li>
+<li>substate radar handle ok bush
+<ul>
+<li>dec message timeout</li>
+<li>if exclamation level == chosen level
+<ul>
+<li>set show message</li>
+<li>reset bar animation frame</li>
+<li>switch to battle start state</li>
+</ul>
+</li>
+<li>mark active timer = 16+rand()/stuff</li>
+<li>inc exclamation level</li>
+<li>active bush = rand()%4</li>
+<li>switch to choosing state</li>
+</ul>
+</li>
+<li>substate user failure (I don't know if this ever gets called, on failure we go to separate global state)
+<ul>
+<li>show received message (??)</li>
+<li>wait for input</li>
+<li>send to splash</li>
+</ul>
+</li>
+<li>substate battle start
+<ul>
+<li>4 ticks to black out screen</li>
+<li>send to battle state</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pokeradar"><a class="header" href="#pokeradar">PokeRadar</a></h1>
+<h2 id="choosing-pokemon"><a class="header" href="#choosing-pokemon">Choosing pokemon</a></h2>
+<ul>
+<li>Checks for event pokemon first
+<ul>
+<li>if rand() &lt; chance, choose event mon</li>
+<li>else choose route 3 mon</li>
+</ul>
+</li>
+<li>get new rand()</li>
+<li>Check for normal pokemon
+<ul>
+<li>start at option A (rarest)</li>
+<li>check for steps</li>
+<li>check if same rand() &lt; chance</li>
+<li>if both pass, choose that option mon</li>
+<li>else continue</li>
+</ul>
+</li>
+<li>substate_y = index+1 (probably found pokemon id)</li>
+<li>substate_b = randomly add 1 to index+1
+<ul>
+<li>This means that even if it chose eg 0, there's a 50%
+chance it'll actually be 1 instead</li>
+<li>Same applies for event mon? Skips event check?</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="wild-pokemon-join"><a class="header" href="#wild-pokemon-join">Wild Pokemon Join</a></h1>
+<h2 id="notes-1"><a class="header" href="#notes-1">Notes</a></h2>
+<h2 id="walker-stuff"><a class="header" href="#walker-stuff">Walker stuff</a></h2>
+<p>In pokeJoinEmptyWalkerWalk</p>
+<ul>
+<li>set global status has_walking_poke [2]</li>
+<li>read reliable identity data</li>
+<li>if walker_info_t.flags.1 (have pokemon) then break</li>
+<li>set walker_info_t.flags.1</li>
+<li>set walker_info_t.unk0 and walker_info_t.unk2</li>
+<li>set walker_info_t.flags.2 (pokemon joined walk)</li>
+<li>write back to reliable area</li>
+<li>read small image for pokemon option c</li>
+<li>write to current small pokemon sprite</li>
+<li>read large image for pokemon option c</li>
+<li>write to current large pokemon sprite</li>
+<li>read pokemon option c name</li>
+<li>write to current pokemon name</li>
+<li>read route_info_t</li>
+<li>copy route_info_t.route_pokemon[2]  to route_info_t.current_pokemon</li>
+<li>clear pokemon_summary_t.flags[7]</li>
+<li>write 0x46 to route_info_t.current_pokemon.happiness</li>
+<li>zero 0x16 bytes of route_info_t.pokemon_nickname </li>
+<li>write route_info_t</li>
+<li>reliable write global health data</li>
+<li>clear event logs (write zero in each entry type)</li>
+</ul>
+<p>In addRandomGift</p>
+<ul>
+<li>(skipped some stuff)</li>
+<li>standard log event, with event_type=(0x10+ addRandomGift param)
+<ul>
+<li>should be event type 0x17</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="walker-initialisation"><a class="header" href="#walker-initialisation">Walker Initialisation</a></h1>
+<h2 id="resetting-via-ir"><a class="header" href="#resetting-via-ir">Resetting via IR</a></h2>
+<p>Relevant commands are:</p>
+<div class="table-wrapper"><table><thead><tr><th>CMD</th><th>Description</th></tr></thead><tbody>
+<tr><td>0xe0</td><td>Clear events and lifetime data</td></tr>
+<tr><td>0x2a</td><td>Clear events only</td></tr>
+<tr><td>0x2c</td><td>Don't clear events or lifetime data</td></tr>
+</tbody></table>
+</div>
+<p>&quot;clear events&quot; means:</p>
+<ul>
+<li>zero <code>walker_info_t.event_bitmap</code></li>
+<li>zero eeprom <code>received_bitfield -&gt; text_event_item_name</code></li>
+</ul>
+<p>&quot;clear lifetime data&quot; means:</p>
+<ul>
+<li>Zero <code>walker_info_t.be_step_count</code></li>
+<li>Zero <code>health_data_t.total_steps</code></li>
+<li>Zero <code>health_data_t.total_days</code></li>
+<li><code>health_data_t.last_sync = </code> 2nd Jan 2008</li>
+<li>Zero <code>health_data-t.today_steps</code></li>
+<li>Zero eeprom <code>caught_pokemon_summary-0x08 -&gt; current_peer_team_data-0x34</code></li>
+</ul>
+<p>All commands call <code>eeprom_init</code> with their respective flags set.</p>
+<p>The one that's actually used by the game is <code>0x2a</code> - only clear event data.</p>
+<h2 id="function-eeprom_init"><a class="header" href="#function-eeprom_init">Function <code>eeprom_init</code></a></h2>
+<ul>
+<li>Zero <code>current_steps</code></li>
+<li>Zero <code>current_watts</code></li>
+<li>Clear <code>status_flags</code> bits 1 and 2 (<code>walker_inited</code>, <code>walker_has_pokemon</code>)</li>
+<li>Reliable read <code>walker_info_t</code>
+<ul>
+<li>Zero <code>unk0, unk1, unk2, unk3</code></li>
+<li>Zero tid/sid</li>
+<li>Zero trainer name</li>
+<li>If <code>clear_events</code> zero <code>event_bitmap_t</code></li>
+<li>Zero flags</li>
+<li>Zero <code>unk4[2]</code></li>
+<li>Zero <code>protocol_subver</code></li>
+<li><code>unk8 = 2</code></li>
+<li>Reliable read <code>unique_identity_data_t</code> into <code>walker_t.unique_identity_data</code></li>
+<li>if <code>clear_steps</code> zero <code>be_step_count</code></li>
+<li>Reliable write <code>walker_info_t</code></li>
+</ul>
+</li>
+<li>Clear and write <code>health_data_t</code>
+<ul>
+<li>if <code>clear_lifetime_data</code>
+<ul>
+<li>Zero <code>total_steps</code></li>
+<li>Zero <code>total_days</code></li>
+<li><code>last_sync = 220924800</code> 2nd Jan 2008</li>
+<li>Zero <code>today_steps</code></li>
+</ul>
+</li>
+<li>Zero <code>walk_minute_counter</code></li>
+<li>Zero <code>current_watts</code></li>
+<li>Zero <code>steps_this_watt</code></li>
+<li><code>settings = 0x24</code></li>
+<li>Reliable write <code>health_data_t</code></li>
+</ul>
+</li>
+<li>If <code>clear_steps</code> zero eeprom <code>0xce80 - 0xdbcc</code> (caught_pokemon_summary-8 -&gt; current_peer_team_data-0x34)</li>
+<li>Else only zero inventory, event_log, step_log (note: this only skips clearing the staging area (?))</li>
+<li>If <code>clear_events</code> zero eeprom <code>0xb800 - 0xbec8</code> (received_bitfield -&gt; text_event_item_name)</li>
+<li>Zero met peer data</li>
+</ul>
+<h2 id="function-check_and_validate_eeprom"><a class="header" href="#function-check_and_validate_eeprom">Function <code>check_and_validate_eeprom</code></a></h2>
+<ul>
+<li>Check for &quot;nintendo&quot; string at first 8 bytes of eeprom.
+<ul>
+<li>if not found:
+<ul>
+<li>run <code>eeprom_init(true, true)</code></li>
+<li>reset sound and contrast from ram health_data</li>
+<li>write &quot;nintendo&quot; to start of eeprom</li>
+</ul>
+</li>
+<li>if found:
+<ul>
+<li>check settings byte and apply a minimum contrast?</li>
+<li>update status flags from eeprom</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Check for unfinished copy by reliable reading both copy markers
+<ul>
+<li>if not ok, continue the copy</li>
+</ul>
+</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="structures"><a class="header" href="#structures">Structures</a></h1>
 <h2 id="walker"><a class="header" href="#walker">Walker</a></h2>
@@ -334,8 +555,9 @@ typedef struct {
     /* +0x10 */ unique_identity_data_t identity_data;
     /* +0x38 */ event_bitmap_t event_bitmap;
     /* +0x48 */ uint16_t le_trainer_name[8];
-    /* +0x58 */ uint8_t unk4[3];
-    /* +0x5b */ uint8_t flags;
+    /* +0x58 */ uint8_t unk4[2];
+    /* +0x5a */ uint8_t event_index;
+    /* +0x5b */ uint8_t flags;              // [0]=init, [1]=has_pokemon, [2]=pokemon_joined, [3..7]=end_of_day_hour
     /* +0x5c */ uint8_t protocol_ver;
     /* +0x5d */ uint8_t unk5;
     /* +0x5e */ uint8_t protocol_subver;
@@ -351,12 +573,14 @@ typedef struct {
 typedef struct {    // strut HealthData
     /* +0x00 */ uint32_t be_total_steps;
     /* +0x04 */ uint32_t be_today_steps;
-    /* +0x08 */ uint32_t be_last_sync;
+    /* +0x08 */ uint32_t be_last_sync;  // seconds since 1 Jan 2001
     /* +0x0c */ uint16_t be_total_days;
     /* +0x0e */ uint16_t be_current_watts;
-    /* +0x10 */ uint8_t unk[4];
-    /* +0x14 */ uint8_t padding[3];
-    /* +0x17 */ uint8_t settings;
+    /* +0x10 */ uint16_t le_walk_minute_counter;    // only used internally
+    /* +0x12 */ uint8_t  steps_this_watt;           // only used internally
+    /* +0x13 */ uint8_t  event_log_write_idx;       // only used internally
+    /* +0x14 */ uint8_t  padding[3];
+    /* +0x17 */ uint8_t  settings; // [0]=special_map, [1..2]=volume, [3..6]=contrast
 } health_data_t;
 
 /*
@@ -609,7 +833,9 @@ typedef enum {
     /* 0x1c */ EVENT_TYPE_ITEM_GIFTED,
 } event_log_type_t;
 
-
+</code></pre>
+<h2 id="ir"><a class="header" href="#ir">IR</a></h2>
+<pre><code class="language-c">
 /*
  *  size: 0x88 = 136 bytes
  */
@@ -812,8 +1038,8 @@ typedef struct {
 <tr><td style="text-align: left">SPECIAL_ITEM_PERCENT_CHANCE</td><td style="text-align: left">0xbf4c</td><td style="text-align: right">1</td><td style="text-align: left">percent chance to dowse this item on route after step minimum met</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"></td><td style="text-align: left">0xbf4d</td><td style="text-align: right">3</td><td style="text-align: left">unused</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">SPECIAL_ROUTE_NAME_NINTENDOENC</td><td style="text-align: left">0xbf50</td><td style="text-align: right">42</td><td style="text-align: left">routename u16[21]</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: left">SPECIAL_POKEMON_EVENT_INDEX</td><td style="text-align: left">0xbf7a</td><td style="text-align: right">1</td><td style="text-align: left">&quot;event index&quot; for catching this route's special pokemon</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: left">SPECIAL_ITEM_EVENT_INDEX</td><td style="text-align: left">0xbf7b</td><td style="text-align: right">1</td><td style="text-align: left">&quot;event index&quot; for dowsing this route's special item</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">SPECIAL_POKEMON_EVENT_INDEX</td><td style="text-align: left">0xbf7a</td><td style="text-align: right">1</td><td style="text-align: left">&quot;event index&quot; for catching this route's special pokemon (1-127)</td><td style="text-align: left">Y</td></tr>
+<tr><td style="text-align: left">SPECIAL_ITEM_EVENT_INDEX</td><td style="text-align: left">0xbf7b</td><td style="text-align: right">1</td><td style="text-align: left">&quot;event index&quot; for dowsing this route's special item (1-127)</td><td style="text-align: left">Y</td></tr>
 <tr><td style="text-align: left">IMG_SPECIAL_POKEMON_SMALL_ANIMATED</td><td style="text-align: left">0xbf7c</td><td style="text-align: right">1920</td><td style="text-align: left">special route pokemon animates small sprite. 32 x 24 x 2 frames. should be 0x180 bytes big, but it 0x170. no idea why but confirmed</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">TEXT_SPECIAL_POKEMON_NAME</td><td style="text-align: left">0xc6fc</td><td style="text-align: right">320</td><td style="text-align: left">special route pokemon name image 80x16</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">IMG_SPECIAL_ROUTE_IMAGE</td><td style="text-align: left">0xc83c</td><td style="text-align: right">192</td><td style="text-align: left">special routes's large image for home screen, like 0x8fbe is for a normal route 32x24</td><td style="text-align: left"></td></tr>
@@ -843,6 +1069,85 @@ typedef struct {
 </tbody></table>
 </div><!-- vim: nowrap
 -->
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ir-commands"><a class="header" href="#ir-commands">IR Commands</a></h1>
+<p>Taken and modified from <a href="http://dmitry.gr/?r=05.Projects&amp;proj=28.%20pokewalker#_TOC_34cd8beec5c4813f4d151130632174e7">Dmitry.gr's writeup</a></p>
+<div class="table-wrapper"><table><thead><tr><th>CMD</th><th>DIR</th><th>NOTES</th></tr></thead><tbody>
+<tr><td>00</td><td>g2w</td><td>Compressed EEPROM write. Documented at length above. Writes 128 bytes on a 128-byte boundary. &quot;extra&quot; byte is top 8 bits of address. Bottom 8 bits will always be zero. Reply will be CMD_04</td></tr>
+<tr><td>02</td><td>w2w, g2w</td><td>Direct EEPROM write. Documented at length above. Writes 128 bytes on a 128-byte boundary. &quot;extra&quot; byte is top 8 bits of address. Bottom 8 bits will always be zero. Reply will be CMD_04</td></tr>
+<tr><td>04</td><td>w2w, w2g</td><td>ACK for an EEPROM write (CMD_00, CMD_02, CMD_0A, CMD_80, CMD_82)</td></tr>
+<tr><td>06</td><td>?2w</td><td>Direct internal memory write. &quot;extra&quot; byte is top 8 bits of address. First byte of payload is low byte of address. The rest of the payload will be written to internal memory at that address. Yes, this means RAM, MMIO, etc. Reply will be CMD_06</td></tr>
+<tr><td>0A</td><td>?2w</td><td>Direct EEPROM write, random length. &quot;extra&quot; byte is top 8 bits of address. First byte of payload is low byte of address. The rest of the payload will be written to EEPROM at that address. Reply will be CMD_04</td></tr>
+<tr><td>0C</td><td>w2w, g2w</td><td>EEPROM read. Payload is a 16-bit start address, big-endian, followed by a one-byte length. Reply will be CMD_0E</td></tr>
+<tr><td>0E</td><td>w2w, w2g</td><td>EEPROM read reply. Payload is the data requested by CMD_0C</td></tr>
+<tr><td>10</td><td>w2w</td><td>Sent by the master walker in a peer-play scenario at start. Enclosed is 0x68 bytes of data - the &quot;IDENTITY DATA&quot;. The expected reply from the peer is CMD_12</td></tr>
+<tr><td>12</td><td>w2w</td><td>Sent by the slave walker in a peer-play scenario in reply to CMD_10. Enclosed is 0x68 bytes of data - the &quot;IDENTITY DATA&quot;. This data is explained later. The &quot;master&quot; will proceed to exchange needed data, and then will send CMD_14</td></tr>
+<tr><td>14</td><td>w2w</td><td>Sent by the master walker in a peer-play scenario after all the needed data has been exchanged. Enclosed is 0x34 bytes of data - the &quot;PEER PLAY DATA&quot;, &quot;extra&quot; byte byte will be 1. Slave walker replies with CMD_14 as well, same format, &quot;extra&quot; byte byte will be 2. Master will then send CMD_16</td></tr>
+<tr><td>16</td><td>w2w</td><td>Sent by the master walker in a peer-play scenario. No data. Reply is also a CMD_16. Does the entire peer-play UI and awards gift item.</td></tr>
+<tr><td>1C</td><td>w2w</td><td>Sent by the either walker during peer play when it's detected that it's &quot;played&quot; with this peer too recently. Shows the &quot;Cannot connect to trainer again&quot; error. No data.</td></tr>
+<tr><td>20</td><td>g2w</td><td>Requests walker's &quot;IDENTITY DATA&quot;. No data attached. Walker is expected to reply with CMD_22</td></tr>
+<tr><td>22</td><td>w2g</td><td>Data is &quot;IDENTITY DATA&quot;, 0x68 bytes</td></tr>
+<tr><td>24</td><td>??</td><td>Ping request. No operation other than reply with CMD_26.</td></tr>
+<tr><td>26</td><td>??</td><td>Ping reply. Sent in reply to CMD_24</td></tr>
+<tr><td>2A</td><td>g2w, w2g</td><td>Data is &quot;UNIQUE ID DATA&quot;, used to set RTC. Erases the walker. Differs somehow from CMD_2C. Reply is CMD_2A, 0x28 bytes, &quot;UNIQUE ID DATA&quot; which is now all 0xFF. This command is actually used by the game to reset the walker</td></tr>
+<tr><td>2C</td><td>?2w</td><td>Data is &quot;UNIQUE ID DATA&quot;, used to set RTC. Erases the walker. Differs somehow from CMD_2A. Reply is CMD_2C, 0x28 bytes, &quot;UNIQUE ID DATA&quot; whic is now all 0xFF</td></tr>
+<tr><td>32</td><td>?2w</td><td>Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_34</td></tr>
+<tr><td>34</td><td>w2?</td><td>Reply to CMD_32, no data</td></tr>
+<tr><td>36</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
+<tr><td>38</td><td>?2w</td><td>Performs the &quot;walk start&quot; action (same as what CMA_5A does), but without the UI. Does not erase &quot;special event&quot; status, unlike CMD_5A which does. See CMD_5A for details.</td></tr>
+<tr><td>42</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_44</td></tr>
+<tr><td>44</td><td>w2?</td><td>Reply to CMD_42, no data</td></tr>
+<tr><td>4E</td><td>g2w</td><td>No data. Reply is CMD_50. Performs &quot;walk end&quot; action, erases pokemon state, shows &quot;walk end&quot; UI</td></tr>
+<tr><td>50</td><td>w2g</td><td>Reply to CMD_4E, no data</td></tr>
+<tr><td>52</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_54</td></tr>
+<tr><td>54</td><td>w2?</td><td>Reply to CMD_52, no data</td></tr>
+<tr><td>56</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
+<tr><td>5A</td><td>g2w</td><td>No data. Reply is CMD_5A. Performs &quot;walk start&quot; action, including copying data to proper places, shows the UI</td></tr>
+<tr><td>60</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_62</td></tr>
+<tr><td>62</td><td>w2?</td><td>Reply to CMD_60, no data</td></tr>
+<tr><td>64</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
+<tr><td>66</td><td>?2w</td><td>No data. Set the message to show at connection end to be &quot;Completed&quot;. Reply is CMD_68</td></tr>
+<tr><td>68</td><td>w2?</td><td>No data. Reply to CMD_66</td></tr>
+<tr><td>80</td><td>g2w</td><td>Compressed EEPROM write. Documented at length above. Writes 128 bytes on a 128-byte boundary. &quot;extra&quot; byte is top 8 bits of address. Bottom 8 bits will always be 0x80. Reply will be CMD_04</td></tr>
+<tr><td>82</td><td>w2w, g2w</td><td>Direct EEPROM write. Documented at length above. Writes 128 bytes on a 128-byte boundary. &quot;extra&quot; byte is top 8 bits of address. Bottom 8 bits will always be 0x80. Reply will be CMD_04</td></tr>
+<tr><td>9C</td><td>?2w, w2?</td><td>No data. Show &quot;Could not receive...&quot; error. Reply is CMD_9C</td></tr>
+<tr><td>9E</td><td>?2w, w2?</td><td>No data. Show &quot;Could not receive...&quot; error. Reply is CMD_9E. Sent by walker in reply to CMD_A0, CMD_A2, CMD_A4, CMD_A6, CMD_A8, CMD_AA, CMD_AC, CMD_AE</td></tr>
+<tr><td>A0 A2 A4 A6 A8 AA AC AE</td><td>?2w, w2?</td><td>Use byte 0x5A of the most recently received &quot;IDENTITY DATA&quot; as event index. Check if we've participated. If so, reply with an empty CMD_9E, if not, reply with the same CMD as we received, 17 bytes. First 16 will be &quot;EVENT BITMAP&quot;, last will be the event index we just checked for.</td></tr>
+<tr><td>B8 BA BC BE</td><td>?2w</td><td>No data. Award the user a stamp. In order they are: heart, spade, diamond, club. Replies are CMD_C8, CMD_CA, CMD_CC, CMD_CE respectively</td></tr>
+<tr><td>C0</td><td>?2w, w2?</td><td>No data. Award the user a &quot;special map&quot; This seems to do nothing but show an icon in the UI, and show the &quot;Special map received&quot; message. Reply is also an empty CMD_C0</td></tr>
+<tr><td>C2</td><td>?2w, w2?</td><td>No data. Award the user an &quot;event pokemon&quot;. Details later. Reply is also an empty CMD_C2</td></tr>
+<tr><td>C4</td><td>?2w, w2?</td><td>No data. Award the user an &quot;event item&quot;. Details later. Reply is also an empty CMD_C4</td></tr>
+<tr><td>C6</td><td>?2w, w2?</td><td>No data. Move the user to an &quot;event route&quot;. Details later. Reply is also an empty CMD_C6</td></tr>
+<tr><td>C8 CA CC CE</td><td>w2?</td><td>Replies to CMD_B8, CMD_BA, CMD_BC, CMD_BE respectively. No data.</td></tr>
+<tr><td>D0</td><td>?2w</td><td>No data. Same as CMD_C0, except also grant the user all 4 stamps</td></tr>
+<tr><td>D2</td><td>?2w</td><td>No data. Same as CMD_C2, except also grant the user all 4 stamps</td></tr>
+<tr><td>D4</td><td>?2w</td><td>No data. Same as CMD_C4, except also grant the user all 4 stamps</td></tr>
+<tr><td>D6</td><td>?2w</td><td>No data. Same as CMD_C6, except also grant the user all 4 stamps</td></tr>
+<tr><td>D8</td><td>?2w</td><td>No data. Show &quot;Cannot complete this connection&quot; error. No reply.</td></tr>
+<tr><td>F0</td><td>?2w, w2?</td><td>Not yet fully understood. Data is 0x71 bytes of &quot;ENROLL DATA&quot; Some sort of enroll action. The only path to code that writes te EEPROM's &quot;UNIQUE ID DATA&quot; and &quot;LCD INIT DATA&quot;. Reply is also a CMD_F0, with 0x28 bytes of data - a copy of the &quot;UNIQUE ID DATA&quot;</td></tr>
+<tr><td>F4</td><td>?2w</td><td>Immediate disconnect. No reply.</td></tr>
+<tr><td>F8</td><td>w2g, w2w</td><td>Part of connection initiation as explained above. No data. Sent by slave walker to master walker or game after getting CMD_FA</td></tr>
+<tr><td>FA</td><td>g2w, w2w</td><td>Part of connection initiation as explained above. No data. Sent by game or master walker to slave walker after seeing an advertising byte 0xFC on IR</td></tr>
+<tr><td>FE</td><td>?2w, w2?</td><td>Not yet fully understood. Writes the 8 data bytes to EEPROM at offset 8. Never seen in the wild. Reply is an empty CMD_FE</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="programming-the-pokewalker"><a class="header" href="#programming-the-pokewalker">Programming the Pokewalker</a></h1>
+<h2 id="useful-resources"><a class="header" href="#useful-resources">Useful resources</a></h2>
+<ul>
+<li><a href="https://www.renesas.com/us/en/software-tool/e8a?doc_order=field_document_revision_date&amp;doc_sort=asc#additional_details">E8a Emulator</a></li>
+<li><a href="https://www.renesas.com/us/en/document/mat/e8a-emulator-users-manual?r=1169666">E8a Emulator Users Manual</a></li>
+<li><a href="https://www.renesas.com/us/en/document/mat/chip-debuggers-performance-property?r=1169666">Renesas Emulator Comparison</a></li>
+<li><a href="https://www.renesas.com/us/en/document/mat/e8a-emulator-additional-document-users-manual-notes-connecting-h8300h-super-low-power-series?r=1169666">Notes on Connecting the H8/38606F</a></li>
+<li><a href="https://www.renesas.com/us/en/document/oth/available-mcus-flash-development-toolkit?r=1169886">Renesas Flash Development Toolkit Available MCUs</a> (page 13)</li>
+<li><a href="https://www.renesas.com/us/en/document/mah/h838602r-group-hardware-manual">H8/38602R Hardware Manual</a> (See Section 6.4 - Flash Memory Programming and Erasure)</li>
+</ul>
+<p>The E8a Emulator uses NMIB, Test, E7_0, E7_1, E7_2, RESB pins to debug and program.</p>
+<p>H8/38602R Group Hardware Manual Section 6.3.1 on boot mode programming:
+Allows programming over the UART. MCU sends one byte of 0x00 to indicate it's ready to rx data.
+Host then sends 0x55 as an ack.
+Host sends a programming control program to the MCU addr (0xFB80-0xFF7F on a H8/38602R), control then goes to this program.
+Serial comms are still up but general regs and SP need to be initialised by program.
+To exit, hold reset, set NMI, release reset.
+Test and NMI need to be constant during the operation.</p>
+<p>For a flowchart, see page 107 (PDF page 141).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="picowalker-hardware-alternatives"><a class="header" href="#picowalker-hardware-alternatives">Picowalker Hardware Alternatives</a></h1>
 
                     </main>

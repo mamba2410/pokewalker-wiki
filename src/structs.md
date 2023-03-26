@@ -17,8 +17,9 @@ typedef struct {
     /* +0x10 */ unique_identity_data_t identity_data;
     /* +0x38 */ event_bitmap_t event_bitmap;
     /* +0x48 */ uint16_t le_trainer_name[8];
-    /* +0x58 */ uint8_t unk4[3];
-    /* +0x5b */ uint8_t flags;
+    /* +0x58 */ uint8_t unk4[2];
+    /* +0x5a */ uint8_t event_index;
+    /* +0x5b */ uint8_t flags;              // [0]=init, [1]=has_pokemon, [2]=pokemon_joined, [3..7]=end_of_day_hour
     /* +0x5c */ uint8_t protocol_ver;
     /* +0x5d */ uint8_t unk5;
     /* +0x5e */ uint8_t protocol_subver;
@@ -34,12 +35,14 @@ typedef struct {
 typedef struct {    // strut HealthData
     /* +0x00 */ uint32_t be_total_steps;
     /* +0x04 */ uint32_t be_today_steps;
-    /* +0x08 */ uint32_t be_last_sync;
+    /* +0x08 */ uint32_t be_last_sync;  // seconds since 1 Jan 2001
     /* +0x0c */ uint16_t be_total_days;
     /* +0x0e */ uint16_t be_current_watts;
-    /* +0x10 */ uint8_t unk[4];
-    /* +0x14 */ uint8_t padding[3];
-    /* +0x17 */ uint8_t settings;
+    /* +0x10 */ uint16_t le_walk_minute_counter;    // only used internally
+    /* +0x12 */ uint8_t  steps_this_watt;           // only used internally
+    /* +0x13 */ uint8_t  event_log_write_idx;       // only used internally
+    /* +0x14 */ uint8_t  padding[3];
+    /* +0x17 */ uint8_t  settings; // [0]=special_map, [1..2]=volume, [3..6]=contrast
 } health_data_t;
 
 /*
@@ -302,6 +305,11 @@ typedef enum {
     /* 0x1c */ EVENT_TYPE_ITEM_GIFTED,
 } event_log_type_t;
 
+```
+
+## IR
+
+```c
 
 /*
  *  size: 0x88 = 136 bytes
