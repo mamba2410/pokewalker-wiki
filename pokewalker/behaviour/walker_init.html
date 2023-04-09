@@ -146,6 +146,32 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="walker-initialisation"><a class="header" href="#walker-initialisation">Walker Initialisation</a></h1>
+<h2 id="checks-on-startup"><a class="header" href="#checks-on-startup">Checks on startup</a></h2>
+<ul>
+<li>Checks for nintendo string
+<ul>
+<li>if not found:
+<ul>
+<li>run <code>eeprom_init(true, true)</code></li>
+<li>write nintendo string to eeprom</li>
+<li>check for unfinished copy</li>
+</ul>
+</li>
+<li>if found:
+<ul>
+<li>Reads <code>health_data_t</code> from eeprom.</li>
+<li>Reads <code>walker_info_t</code> from eeprom</li>
+<li>sets global init and has_pokemon flags based on <code>walker_info_t.flags[0..1]</code></li>
+<li>check for unfinished copy</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>go to sleep mode (??)</li>
+<li>(In sleep mode now)</li>
+<li>process splash normally</li>
+<li>if we aren't inited, go to connect loop</li>
+</ul>
 <h2 id="resetting-via-ir"><a class="header" href="#resetting-via-ir">Resetting via IR</a></h2>
 <p>Relevant commands are:</p>
 <div class="table-wrapper"><table><thead><tr><th>CMD</th><th>Description</th></tr></thead><tbody>
@@ -164,7 +190,7 @@
 <li>Zero <code>walker_info_t.be_step_count</code></li>
 <li>Zero <code>health_data_t.total_steps</code></li>
 <li>Zero <code>health_data_t.total_days</code></li>
-<li><code>health_data_t.last_sync = </code> 2nd Jan 2008</li>
+<li><code>health_data_t.last_sync = date</code> 2nd Jan 2008</li>
 <li>Zero <code>health_data-t.today_steps</code></li>
 <li>Zero eeprom <code>caught_pokemon_summary-0x08 -&gt; current_peer_team_data-0x34</code></li>
 </ul>
@@ -267,22 +293,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

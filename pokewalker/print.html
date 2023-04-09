@@ -155,6 +155,10 @@
 <li><a href="https://www.renesas.com/us/en/document/mah/h8300h-series-software-manual">H8/300H Series Software Manual</a></li>
 <li><a href="https://www.renesas.com/us/en/document/mah/h8300l-series-software-manual">H8/300L Series Software Manual</a></li>
 </ul>
+<h2 id="tools"><a class="header" href="#tools">Tools</a></h2>
+<ul>
+<li><a href="https://unrealpowerz.github.io/pokewalker-eeprom-editor/">UnrealPowerz' EEPROM viewer/editor</a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pokewalker-hardware"><a class="header" href="#pokewalker-hardware">Pokewalker Hardware</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="definitions"><a class="header" href="#definitions">Definitions</a></h1>
 <ul>
@@ -170,31 +174,47 @@
 <li>Normal handshake, DS asserts master</li>
 </ul>
 <h2 id="what-the-walker-does"><a class="header" href="#what-the-walker-does">What the walker does</a></h2>
+<p>On rx 0x5a:</p>
 <ul>
-<li>Start walk action (after 0x5a)
+<li>runs <code>start_walk</code></li>
+<li>zeroes 0x6c8 bytes at 0xb800</li>
+<li>go to animation</li>
+</ul>
+<p>On rx 0x38:</p>
+<ul>
+<li>runs <code>start_walk</code></li>
+<li>go to animation</li>
+</ul>
+<h3 id="function-start_walk"><a class="header" href="#function-start_walk">Function <code>start_walk</code></a></h3>
 <ul>
 <li>Write 0xa5 to eeprom reliable data area copy markers</li>
+<li>(start of function <code>eeprom_unfinished_copy</code>)</li>
 <li>copy 0x2900 bytes from eeprom 0xd700 to 0x8f00</li>
 <li>copy 0x280 bytes ftin eeprom 0xd480 to 0xcc00 (my team data)</li>
 <li>clears copy marker in eeprom reliable data area</li>
+<li>(end of function <code>eeprom_unfinished_copy</code>)</li>
 <li>zero event log (same as walk start)</li>
 <li>zero peer team data, 0x1568 bytes of eeprom at 0xde24</li>
-<li>clear current watts</li>
+<li>zero <code>current watts</code></li>
+<li>zero <code>health_data.walk_minute_counter</code></li>
+<li>zero <code>health_data.event_log_idx</code></li>
+<li>zero <code>health_data.current_watts</code></li>
 <li>write ram cache health data to eeprom</li>
 <li>reads walker_info_t from eeprom</li>
-<li>set walker status flag bits [0..1]</li>
-<li>sets unk[0..3] in walker_info_t</li>
-<li>write walker_info_t to eeprom</li>
+<li>set walker status flag bits [0..1], clears bit [2]</li>
+<li>copy <code>unk{0..3}</code> in <code>walker_info</code> from <code>peer_walk_info</code></li>
+<li>copy <code>walker_info.{tid,sid}</code> from <code>peer_walk_info</code></li>
+<li>copy <code>trainer_name</code>, <code>protocol_ver</code>, <code>protocol_subver</code>, <code>unk5</code> from <code>peer_walk_info</code></li>
+<li>sets <code>walker_info.unk8</code> to <code>2</code></li>
+<li>reliable write <code>walker_info_t</code> to eeprom</li>
 <li>sets up walk start log event</li>
 <li>writes walk start log event</li>
-<li>clears obtained items/pokemon/peer items</li>
+<li>clears obtained items/pokemon/peer items (zeros 0x64 bytes at 0xce8c)</li>
 </ul>
-</li>
-</ul>
-<h2 id="log"><a class="header" href="#log">Log</a></h2>
+<h3 id="log"><a class="header" href="#log">Log</a></h3>
 <ul>
 <li>calls <a href="behaviour/./event_log.html">logEvent</a></li>
-<li>e1 = 0x00</li>
+<li>e1 = 0x0000</li>
 <li>[sp] = settings byte u8 and settings byte&amp;0x01 u8</li>
 <li>event type 0x19</li>
 <li>isOnSpecialRoute = settings byte&amp;0x01</li>
@@ -448,6 +468,32 @@ chance it'll actually be 1 instead</li>
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="walker-initialisation"><a class="header" href="#walker-initialisation">Walker Initialisation</a></h1>
+<h2 id="checks-on-startup"><a class="header" href="#checks-on-startup">Checks on startup</a></h2>
+<ul>
+<li>Checks for nintendo string
+<ul>
+<li>if not found:
+<ul>
+<li>run <code>eeprom_init(true, true)</code></li>
+<li>write nintendo string to eeprom</li>
+<li>check for unfinished copy</li>
+</ul>
+</li>
+<li>if found:
+<ul>
+<li>Reads <code>health_data_t</code> from eeprom.</li>
+<li>Reads <code>walker_info_t</code> from eeprom</li>
+<li>sets global init and has_pokemon flags based on <code>walker_info_t.flags[0..1]</code></li>
+<li>check for unfinished copy</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>go to sleep mode (??)</li>
+<li>(In sleep mode now)</li>
+<li>process splash normally</li>
+<li>if we aren't inited, go to connect loop</li>
+</ul>
 <h2 id="resetting-via-ir"><a class="header" href="#resetting-via-ir">Resetting via IR</a></h2>
 <p>Relevant commands are:</p>
 <div class="table-wrapper"><table><thead><tr><th>CMD</th><th>Description</th></tr></thead><tbody>
@@ -466,7 +512,7 @@ chance it'll actually be 1 instead</li>
 <li>Zero <code>walker_info_t.be_step_count</code></li>
 <li>Zero <code>health_data_t.total_steps</code></li>
 <li>Zero <code>health_data_t.total_days</code></li>
-<li><code>health_data_t.last_sync = </code> 2nd Jan 2008</li>
+<li><code>health_data_t.last_sync = date</code> 2nd Jan 2008</li>
 <li>Zero <code>health_data-t.today_steps</code></li>
 <li>Zero eeprom <code>caught_pokemon_summary-0x08 -&gt; current_peer_team_data-0x34</code></li>
 </ul>
@@ -1094,15 +1140,16 @@ typedef struct {
 <tr><td>34</td><td>w2?</td><td>Reply to CMD_32, no data</td></tr>
 <tr><td>36</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
 <tr><td>38</td><td>?2w</td><td>Performs the &quot;walk start&quot; action (same as what CMA_5A does), but without the UI. Does not erase &quot;special event&quot; status, unlike CMD_5A which does. See CMD_5A for details.</td></tr>
-<tr><td>42</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_44</td></tr>
-<tr><td>44</td><td>w2?</td><td>Reply to CMD_42, no data</td></tr>
+<tr><td>40</td><td>g2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_42</td></tr>
+<tr><td>42</td><td>w2g</td><td>Reply to CMD_40, no data</td></tr>
+<tr><td>44</td><td>w2g</td><td>No data, no reply. Show &quot;cannot complete this connection&quot;</td></tr>
 <tr><td>4E</td><td>g2w</td><td>No data. Reply is CMD_50. Performs &quot;walk end&quot; action, erases pokemon state, shows &quot;walk end&quot; UI</td></tr>
 <tr><td>50</td><td>w2g</td><td>Reply to CMD_4E, no data</td></tr>
 <tr><td>52</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_54</td></tr>
 <tr><td>54</td><td>w2?</td><td>Reply to CMD_52, no data</td></tr>
 <tr><td>56</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
 <tr><td>5A</td><td>g2w</td><td>No data. Reply is CMD_5A. Performs &quot;walk start&quot; action, including copying data to proper places, shows the UI</td></tr>
-<tr><td>60</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_62</td></tr>
+<tr><td>60</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_62. Also reload our walker info from eeprom.</td></tr>
 <tr><td>62</td><td>w2?</td><td>Reply to CMD_60, no data</td></tr>
 <tr><td>64</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
 <tr><td>66</td><td>?2w</td><td>No data. Set the message to show at connection end to be &quot;Completed&quot;. Reply is CMD_68</td></tr>
@@ -1167,22 +1214,6 @@ Test and NMI need to be constant during the operation.</p>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

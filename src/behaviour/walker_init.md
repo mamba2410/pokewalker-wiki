@@ -1,5 +1,21 @@
 # Walker Initialisation
 
+## Checks on startup
+
+- Checks for nintendo string
+  - if not found:
+    - run `eeprom_init(true, true)`
+    - write nintendo string to eeprom
+    - check for unfinished copy
+  - if found:
+    - Reads `health_data_t` from eeprom.
+    - Reads `walker_info_t` from eeprom
+    - sets global init and has_pokemon flags based on `walker_info_t.flags[0..1]`
+    - check for unfinished copy
+- go to sleep mode (??)
+- (In sleep mode now)
+- process splash normally
+- if we aren't inited, go to connect loop
 
 ## Resetting via IR
 
@@ -21,7 +37,7 @@ Relevant commands are:
 - Zero `walker_info_t.be_step_count`
 - Zero `health_data_t.total_steps`
 - Zero `health_data_t.total_days`
-- `health_data_t.last_sync = ` 2nd Jan 2008
+- `health_data_t.last_sync = date` 2nd Jan 2008
 - Zero `health_data-t.today_steps`
 - Zero eeprom `caught_pokemon_summary-0x08 -> current_peer_team_data-0x34`
 

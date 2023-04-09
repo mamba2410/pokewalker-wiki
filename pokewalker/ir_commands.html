@@ -170,15 +170,16 @@
 <tr><td>34</td><td>w2?</td><td>Reply to CMD_32, no data</td></tr>
 <tr><td>36</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
 <tr><td>38</td><td>?2w</td><td>Performs the &quot;walk start&quot; action (same as what CMA_5A does), but without the UI. Does not erase &quot;special event&quot; status, unlike CMD_5A which does. See CMD_5A for details.</td></tr>
-<tr><td>42</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_44</td></tr>
-<tr><td>44</td><td>w2?</td><td>Reply to CMD_42, no data</td></tr>
+<tr><td>40</td><td>g2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_42</td></tr>
+<tr><td>42</td><td>w2g</td><td>Reply to CMD_40, no data</td></tr>
+<tr><td>44</td><td>w2g</td><td>No data, no reply. Show &quot;cannot complete this connection&quot;</td></tr>
 <tr><td>4E</td><td>g2w</td><td>No data. Reply is CMD_50. Performs &quot;walk end&quot; action, erases pokemon state, shows &quot;walk end&quot; UI</td></tr>
 <tr><td>50</td><td>w2g</td><td>Reply to CMD_4E, no data</td></tr>
 <tr><td>52</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_54</td></tr>
 <tr><td>54</td><td>w2?</td><td>Reply to CMD_52, no data</td></tr>
 <tr><td>56</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
 <tr><td>5A</td><td>g2w</td><td>No data. Reply is CMD_5A. Performs &quot;walk start&quot; action, including copying data to proper places, shows the UI</td></tr>
-<tr><td>60</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_62</td></tr>
+<tr><td>60</td><td>?2w</td><td>Same as CMD_32. Data is &quot;IDENTITY DATA&quot; that master sends to the slave. From it only RTC is used, if a flag is set. Reply from the walker will be CMD_62. Also reload our walker info from eeprom.</td></tr>
 <tr><td>62</td><td>w2?</td><td>Reply to CMD_60, no data</td></tr>
 <tr><td>64</td><td>?2w</td><td>No data, no reply. Shows &quot;Cannot complete this connection&quot; error</td></tr>
 <tr><td>66</td><td>?2w</td><td>No data. Set the message to show at connection end to be &quot;Completed&quot;. Reply is CMD_68</td></tr>
@@ -235,22 +236,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

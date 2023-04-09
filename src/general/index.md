@@ -8,3 +8,7 @@
 - [H8/39606F Group Addition Notes](https://www.renesas.com/us/en/document/tcu/addition-h838606-group)
 - [H8/300H Series Software Manual](https://www.renesas.com/us/en/document/mah/h8300h-series-software-manual)
 - [H8/300L Series Software Manual](https://www.renesas.com/us/en/document/mah/h8300l-series-software-manual)
+
+## Tools
+
+- [UnrealPowerz' EEPROM viewer/editor](https://unrealpowerz.github.io/pokewalker-eeprom-editor/)

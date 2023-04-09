@@ -151,31 +151,47 @@
 <li>Normal handshake, DS asserts master</li>
 </ul>
 <h2 id="what-the-walker-does"><a class="header" href="#what-the-walker-does">What the walker does</a></h2>
+<p>On rx 0x5a:</p>
 <ul>
-<li>Start walk action (after 0x5a)
+<li>runs <code>start_walk</code></li>
+<li>zeroes 0x6c8 bytes at 0xb800</li>
+<li>go to animation</li>
+</ul>
+<p>On rx 0x38:</p>
+<ul>
+<li>runs <code>start_walk</code></li>
+<li>go to animation</li>
+</ul>
+<h3 id="function-start_walk"><a class="header" href="#function-start_walk">Function <code>start_walk</code></a></h3>
 <ul>
 <li>Write 0xa5 to eeprom reliable data area copy markers</li>
+<li>(start of function <code>eeprom_unfinished_copy</code>)</li>
 <li>copy 0x2900 bytes from eeprom 0xd700 to 0x8f00</li>
 <li>copy 0x280 bytes ftin eeprom 0xd480 to 0xcc00 (my team data)</li>
 <li>clears copy marker in eeprom reliable data area</li>
+<li>(end of function <code>eeprom_unfinished_copy</code>)</li>
 <li>zero event log (same as walk start)</li>
 <li>zero peer team data, 0x1568 bytes of eeprom at 0xde24</li>
-<li>clear current watts</li>
+<li>zero <code>current watts</code></li>
+<li>zero <code>health_data.walk_minute_counter</code></li>
+<li>zero <code>health_data.event_log_idx</code></li>
+<li>zero <code>health_data.current_watts</code></li>
 <li>write ram cache health data to eeprom</li>
 <li>reads walker_info_t from eeprom</li>
-<li>set walker status flag bits [0..1]</li>
-<li>sets unk[0..3] in walker_info_t</li>
-<li>write walker_info_t to eeprom</li>
+<li>set walker status flag bits [0..1], clears bit [2]</li>
+<li>copy <code>unk{0..3}</code> in <code>walker_info</code> from <code>peer_walk_info</code></li>
+<li>copy <code>walker_info.{tid,sid}</code> from <code>peer_walk_info</code></li>
+<li>copy <code>trainer_name</code>, <code>protocol_ver</code>, <code>protocol_subver</code>, <code>unk5</code> from <code>peer_walk_info</code></li>
+<li>sets <code>walker_info.unk8</code> to <code>2</code></li>
+<li>reliable write <code>walker_info_t</code> to eeprom</li>
 <li>sets up walk start log event</li>
 <li>writes walk start log event</li>
-<li>clears obtained items/pokemon/peer items</li>
+<li>clears obtained items/pokemon/peer items (zeros 0x64 bytes at 0xce8c)</li>
 </ul>
-</li>
-</ul>
-<h2 id="log"><a class="header" href="#log">Log</a></h2>
+<h3 id="log"><a class="header" href="#log">Log</a></h3>
 <ul>
 <li>calls <a href="./event_log.html">logEvent</a></li>
-<li>e1 = 0x00</li>
+<li>e1 = 0x0000</li>
 <li>[sp] = settings byte u8 and settings byte&amp;0x01 u8</li>
 <li>event type 0x19</li>
 <li>isOnSpecialRoute = settings byte&amp;0x01</li>
@@ -210,22 +226,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
