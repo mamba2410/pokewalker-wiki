@@ -57,7 +57,7 @@ typedef struct {
 /*
  *  size: 256 bytes
  *  dmitry: RELIABLE_DATA
- *  
+ *
  *  Warning: gcc will add padding by default
  *  since members aren't aligned
  */
@@ -322,4 +322,44 @@ typedef struct {
     /* +0x08 */ uint8_t  payload[128];
 } pw_packet_t;
 ```
+
+## Audio
+
+```c
+
+/*
+ *  size: 0x02 = 2 bytes
+ */
+typedef struct {
+    /* +0x00 */ uint8_t info;       // ? used in calculating note duration
+    /* +0x01 */ uint8_t period_idx; // [7] = negative duration?, [6:0] = index into period table
+} pw_sound_frame_t;
+
+/*
+ *  size: 0x03 = 3 bytes
+ */
+typedef struct {
+    /* 0x00 */ uint16_t offset; // byte offset into SOUND_DATA for start of sound
+    /* 0x02 */ uint8_t  length; // number of bytes this sound effect uses
+    /* 0x03 */ uint8_t  pad;
+} pw_sound_info_t;
+
+enum sound_type {
+    SOUND_NAVIGATE_MENU = 0,
+    SOUND_NAVIGATE_BACK = 1,
+    SOUND_CURSOR_MOVE = 2,
+    SOUND_POKERADAR_FOUND_SOMETHING = 3,
+    SOUND_SELECTION_MISS = 4,
+    SOUND_DOWSING_FOUND_ITEM = 5,
+    SOUND_POKEMON_CAUGHT = 7,
+    SOUND_POKEMON_ENCOUNTER = 10,
+    SOUND_MINIGAME_FAIL = 14,
+    SOUND_POKEBALL_THROW = 15,
+}
+```
+
+Notes:
+- What does `pw_sound_frame_t` store exactly? what's `info` and why does `period_idx` seem to be used to calculate
+    a negative(?) duration?
+- It would be interesting to see what the missing sounds are. m8 has a wav file, maybe they're mystery gift/ir stuff.
 

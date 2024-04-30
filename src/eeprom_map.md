@@ -154,8 +154,8 @@
 | TEXT_GOOD_JOB | 0x89b0 | 384 |  "good job!" string 96x16 | |
 | TEXT_SWITCH | 0x8b30 | 320 |  "switch?" string 80x16 | |
 |  | 0x8c70 | 64 |  ??? | |
-| RANDOM_CHECKSUM_INFO | 0x8cb0 | 48 |  random checksum area descriptor addrs	(see 	0x36f2:randomeepromchecksumcheck	, struct struct randomcheckinfo) | |
-| RANDOM_CHECKSUM_AREA | 0x8cf0 | 528 |  random garbage data that is checksummed by randomeepromchecksumcheck() | |
+| SOUND_OFFSET | 0x8cb0 | 64 | offsets into `SOUND_DATA` that contain the sounds data, array of `pw_sound_info_t[16]` | |
+| SOUND_DATA | 0x8cf0 | 528 | sound data, array of `pw_sound_frame_t[264]` | |
 | ROUTE_INFO | 0x8f00 | 190 |  struct routeinfo - current route data | |
 | IMG_ROUTE_LARGE | 0x8fbe | 192 |  current "area" we are strolling in graphic 32x24 | |
 | TEXT_ROUTE_NAME | 0x907e | 320 |  current "area" we are strolling in textual name 80x16 | |
