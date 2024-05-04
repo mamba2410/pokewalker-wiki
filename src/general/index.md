@@ -7,14 +7,14 @@ Also included will be more information and an expanded scope than the article al
 The wiki is divided into different sections, mostly aimed at people developing
 things for the Pokewalker.
 
-- The [behaviour](../behaviour/index.md) section details the inner workings of
+- The [behaviour](behaviour/index.md) section details the inner workings of
     certain modules and sub-modules of the walker.
-- The [manipulation](../manipulation/index.md) section details things that can be
+- The [manipulation](manipulation/index.md) section details things that can be
     done to manipulate things on the walker, such as RCE and re-flashing the firmware
     on the walker.
 
-There are also sections for the [EEPROM map](../eeprom_map.md), [data structures](../structs.md)
-used in the walker as well as all of the [IR commands](../ir_commands.md) used in comms between the
+There are also sections for the [EEPROM map](eeprom_map.md), [data structures](structs.md)
+used in the walker as well as all of the [IR commands](ir_commands.md) used in comms between the
 walker and either the DS or another walker.
 
 This wiki aims to be actively updated whenever new discoveries are made for the walker.
