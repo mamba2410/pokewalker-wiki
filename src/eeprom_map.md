@@ -1,5 +1,9 @@
 # EEPROM Map
 
+This map has been taken from Dmitry's article and has been modified/corrected as more
+information has been found.
+For things that have been changed since dmitry's article, see the `changed` column.
+
 | name | addr | size | comments | changed? |
 |:-----|:-----|-----:|:---------|:---|
 | NINTENDO | 0x0000 | 8 |  "nintendo" string as a magic marker. if rom does not find this at boot, it will consider the walker empty and uninitialized | |
@@ -71,7 +75,7 @@
 | IMG_PRESENT_LARGE | 0x1a90 | 192 |  large present icon for item view 32x24 | |
 | IMG_DOWSING_BUSH_DARK | 0x1b50 | 64 |  small bush dark-colored, for dowsing 16x16 | |
 | IMG_DOWSING_BUSH_LIGHT | 0x1b90 | 64 |  small bush light-colored, for dowsing 16x16 | |
-|  | 0x1bd0 | 128 |  "left: "string on white background. seems unreferenced 32x16 | |
+| TEXT_LEFT | 0x1bd0 | 128 |  "left: " string on white background for dowsing. 32x16 | Y |
 |  | 0x1c50 | 96 |  blank image 16x24 | |
 | IMG_RADAR_BUSH | 0x1cb0 | 192 |  bush dark 32x24 | Y |
 | IMG_RADAR_BUBBLE_ONE | 0x1d70 | 64 |  word bubble with one exclamation point (for poke hunting) 16x16 | |
@@ -154,8 +158,8 @@
 | TEXT_GOOD_JOB | 0x89b0 | 384 |  "good job!" string 96x16 | |
 | TEXT_SWITCH | 0x8b30 | 320 |  "switch?" string 80x16 | |
 |  | 0x8c70 | 64 |  ??? | |
-| SOUND_OFFSET | 0x8cb0 | 64 | offsets into `SOUND_DATA` that contain the sounds data, array of `pw_sound_info_t[16]` | |
-| SOUND_DATA | 0x8cf0 | 528 | sound data, array of `pw_sound_frame_t[264]` | |
+| SOUND_OFFSET | 0x8cb0 | 64 | offsets into `SOUND_DATA` that contain the sounds data, array of `pw_sound_info_t[16]` | Y |
+| SOUND_DATA | 0x8cf0 | 528 | sound data, array of `pw_sound_frame_t[264]` | Y |
 | ROUTE_INFO | 0x8f00 | 190 |  struct routeinfo - current route data | |
 | IMG_ROUTE_LARGE | 0x8fbe | 192 |  current "area" we are strolling in graphic 32x24 | |
 | TEXT_ROUTE_NAME | 0x907e | 320 |  current "area" we are strolling in textual name 80x16 | |

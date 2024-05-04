@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        @font-face {
+            font-family: pokewalker;
+            src: url(pkmndp.ttf);
+        }
+
+        :root {
+            align-content: center;
+        }
+
+        * {
+            font-family: pokewalker;
+            font-size: 1.5rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 5rem;
+        }
+
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        .something {
+            font-size: 4rem;
+            --red-height: 45vh;
+            --black-height: 5vh;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(180deg, hsl(0, 58%, 46%) 0px, hsl(0, 58%, 46%) var(--red-height), rgba(0, 0, 0, 1) var(--red-height), rgba(0, 0, 0, 1) calc(var(--red-height) + var(--black-height)), rgba(255, 255, 255, 1) calc(var(--red-height) + var(--black-height)), rgba(255, 255, 255, 1) 100%);
+            width: 100%;
+            min-height: 100%;
+            position: fixed;
+            top: 0;
+        }
+
+        .moving {
+            position: relative;
+            top: 100%;
+            align-content: center;
+        }
+
+        .content {
+            border-radius: 30px;
+            border: 16px solid black;
+            background-color: #acaea4;
+            padding: 10px;
+            max-width: 80%;
+            margin:auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="something"></div>
+    <div class="moving">
+        <div class="title">
+            <h1>The State of the Pokewalker</h1>
+        </div>
+        <div class="content">
+
+            <h3>Completed</h3>
+
+            <p>
+            Currently, the Pokewalker has had its flash rom (program) dumped.
+            You can view the writeup <a href="http://dmitry.gr/?r=05.Projects&proj=28.%20pokewalker">here</a>
+            courtesey of Dmitry.Gr.
+            </p>
+
+            <p>
+            mamba2410 is working on a wiki (more an organised collection of thoughts)
+            on the Pokewalker and its internals, based off of the work done by
+            Dmitry.Gr.
+            You can find it <a href="https://pokewalker.msocproject.org/wiki/">here</a>.
+            </p>
+
+            <p>
+            There is an emulator <a href="https://github.com/UnrealPowerz/powar">here</a>
+            (available on Windows) written by UnrealPowerz (see the "Releases"
+            section on the right), with a <a href="https://powar-wasm.netlify.app/">web assembly</a>
+            version, ported by D. Stanley.
+            A video by SuperMonkeyCherrim showing it off can be seen
+            <a href="https://youtu.be/TzRL_opOvVM">here</a>.
+            </p>
+
+            <p>
+            There's another emulator <a href="https://github.com/jpcerrone/pokestroller">here</a>
+            available for Windows written by jpcerrone.
+            It's a bit experimental at the moment but it works.
+            </p>
+
+            <p>
+            In order to use the emulator, you need a rom dump.
+            You can do this using a homebrewed DSi or 3DS, as long as you own
+            a physical copy of HG/SS, BW or B2W2.
+            There's a walking game that is known to NOT work. Do NOT buy it for
+            the purpose of using it as an IR cartridge/interface.
+            The rom dumper by PoroCYon can be found <a href="https://git.titandemo.org/PoroCYon/pokewalker-rom-dumper">here</a>
+            (see the "Download" section).
+            </p>
+
+            <p>
+            UnrealPowerz has a web app to view (and plans to edit) Pokewalker
+            eeprom data. It's available <a href="https://unrealpowerz.github.io/pokewalker-eeprom-editor/">here</a>.
+            </p>
+
+            <p>
+            Lincoln has also writtena python script to inject a custom route
+            into the Pokewalker, check it out <a href="https://github.com/Lincoln-LM/pokewalker-course-injector">here</a>.
+            </p>
+
+            <p>
+            We have a Discord server filled with people interested in the
+            Pokewalker. <a href="https://discord.gg/ymbTMsS">https://discord.gg/ymbTMsS</a>
+            </p>
+
+            <h3>In progress</h3>
+
+            <p>
+            mamba2410 is making a <a href="https://github.com/mamba2410/picowalker">Raspberry pi pico-based alternative</a>
+            to the pokewalker running custom firmware that aims to be a drop-in
+            replacement.
+            They are also working on making a custom device/PCB based on the
+            STM32U5 series CPUs, see <a href="https://github.com/mamba2410/picowalker-32">here</a>.
+            The software side is pretty complete, albeit missing a few side features.
+            There's a <a href="https://github.com/mamba2410/picowalker-sdl">port to Windows/linux</a>
+            but it had no connectivity with DS emulators (yet).
+            The hardware side is still in development, but they are looking
+            for people with knowledge of PCB design and circuit design.
+            </p>
+
+            <p>
+            There are a few other projects going on in the Discord, so go and
+            check it out!
+            </p>
+
+            <h3>Useful Tools</h3>
+
+            <p></p>
+            <ul>
+                <li>PoroCYon's ROM dumper that runs on 3DS/DSi <a href="https://git.titandemo.org/PoroCYon/pokewalker-rom-dumper">here</a></li>
+                <li>UnrealPowerz' ROM data/image viewer <a href="https://unrealpowerz.github.io/pokewalker-eeprom-editor/">here</a></li>
+                <li>Mamba2410's terminal image viewer <a href="https://github.com/mamba2410/pw-lcd">here</a></li>
+                <li>Lincoln's route injector <a href="https://github.com/Lincoln-LM/pokewalker-course-injector">here</a></li>
+            </ul>
+
+            <h3>Outdated and Obsolete</h3>
+
+            <p>
+            mamba2410's original <a href="https://github.com/mamba2410/reverse-pokewalker/">reverse-pokewalker repo</a>
+            is now archived since its main purpose has been achieved.
+            </p>
+
+            <p>
+            PoroCYon's <a href="https://git.titandemo.org/PoroCYon/pwemu/">zig emulator</a>
+            is no longer maintained in favour of UnrealPowerz' one.
+            </p>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

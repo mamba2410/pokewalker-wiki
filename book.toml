@@ -6,9 +6,9 @@ src = "src"
 title = "Pokewalker Wiki"
 
 [build]
-build-dir = "pokewalker"
+build-dir = "../pokewalker-wiki-html"
 
 [output.html]
-site-url = "/pokewalker/"
+site-url = "/pokewalker-wiki/"
 additional-css = ["fixup.css"]
 
