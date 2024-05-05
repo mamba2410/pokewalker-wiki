@@ -1,8 +1,16 @@
 # Random gift
 
-## Analysis of disassembly 0x5d52
+In sleep mode (and only in sleep mode), calls `choose_random_event` if `walker_status_flags.set_on_startup` and not `walker_status_flags.poke_joined`.
+`choose_random_event` does this exact check again before doing anything.
+Does `walker_status_flags.poke_joined` have another usage?
+
+## Analysis of `0x5d52 handle_random_splash_event`
 
 `handle_random_splash_event` takes parameter `event_type` in `r0l`.
+
+- Sets `substate_b` to `array_bd84[event_type*2]` - related to drawing?
+- Sets current state to `0x0c` (random gift)
+- Sets `seconds_counter` to 0
 
 ```c
 enum event_type {
@@ -10,6 +18,7 @@ enum event_type {
     EVENT_TYPE_50_WATTS = 2,
     EVENT_TYPE_20_WATTS = 3,
     EVENT_TYPE_10_WATTS = 4,
+    EVENT_TYPE_NO_GIFT = 5, // smiled/is happy etc
     EVENT_TYPE_JOIN_WALK = 7,
 };
 ```
@@ -60,3 +69,30 @@ common to all event types:
 - reliable write ram health data to eeprom
 - clear event log
 
+## Analysis of `0x5fc2 choose_random_event`
+
+checks walker flags, if set on startup and not poke joined then do the following:
+
+- if we aren't in splash state, go to default
+- if walker flags bit zero is not set, go to default
+- clear walker flags bit 0
+- clear substate y, z
+- put current watts on stack
+- 40% rand check, if failed go to default
+- check walker flags, if we dont have pokemon:
+    - if watts > 300 go to default
+    - if not, move `7` to substate y (probably `EVENT_TYPE_JOin_WALK`)
+    - move `0x30` into substate z
+    - exit
+- check walker flags, if we do have pokemon
+    - if seconds counter > 3600, go to default
+    - reset heap, malloc and read `route_info`
+    - put happiness inro `r5l`
+    - reset heap, malloc and read 12 bytes for obtained items
+    - if we have free slot, happiness > 90 and watts > 500, substate_y = `EVENT_TYPE_ITEM`
+    - else if no free slot, happiness > 80 and watts > 250, substate_y = `EVENT_TYPE_50_WATTS`
+    - else if watts > 200 `EVENT_TYPE_20_WATTS`
+    - else if watts > 100 `EVENT_TYPE_10_WATTS`
+    - else if watts > 50 and `ran_health_data.walk_minute_counter` > 60 `EVENT_TYPE_5`
+    - else exit (with y=z=0)
+    - y is event type, set z to 0x30, then exit
