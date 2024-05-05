@@ -13,6 +13,7 @@
     - [Wild Pokemon Join](behaviour/wild_pokemon_join.md)
     - [Battle](behaviour/battle.md)
     - [Audio](behaviour/audio.md)
+    - [Random Events](behaviour/random_gift.md)
 - [Data Structures](structs.md)
 - [EEPROM Map](eeprom_map.md)
 - [IR Commands](ir_commands.md)
