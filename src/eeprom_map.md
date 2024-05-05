@@ -128,7 +128,7 @@ For things that have been changed since dmitry's article, see the `changed` colu
 | TEXT_CRITICAL_HIT | 0x5cb0 | 384 |  "a critical hit!" string 96x16 | |
 | TEXT_SPACES | 0x5e30 | 384 |  "       " (yes a bunch of spaces) string 96x16 | |
 | TEXT_THREW_BALL | 0x5fb0 | 384 |  "threw a poke ball." string 96x16 | Y |
-| TEXT_ALMOST_HAD | 0x6130 | 128 |  "almost had it!" string 96x16 | |
+| TEXT_ALMOST_HAD | 0x6130 | 384 |  "almost had it!" string 96x16 | |
 | TEXT_STARE_DOWN | 0x62b0 | 384 |  "stare down!" string 96x16 | |
 | TEXT_LOST | 0x6430 | 384 |  "lost!" string 96x16 | |
 | TEXT_PEER_HAS_ARRIVED | 0x65b0 | 384 |  "has arrived" (for walker to walker) string 96x16 | Y |
