@@ -1,11 +1,55 @@
 # Random gift
 
-In sleep mode (and only in sleep mode), calls `choose_random_event` if `walker_status_flags.set_on_startup` and not `walker_status_flags.poke_joined`.
-`choose_random_event` does this exact check again before doing anything.
-Does `walker_status_flags.poke_joined` have another usage?
+## Overview of the process
 
-There's a `random_event_table` which is an array of 7(*) pointers to 12-byte data for each event type.
-- (*) since event types start at 1, index 0 is not part of the array. event type 6 doesn't exist so its entry contains a null pointer.
+In sleep mode (and only in sleep mode), calls `choose_random_event` if device is awake.
+`choose_random_event` does this exact check again before doing anything.
+If we're in the splash state and `walker_status_flags` bit 0 is set then we can have a gift.
+
+There's a 40% chance for an event to happen each time.
+If an event is chosen, first check if we have a pokemon.
+If we don't have a pokemon and current watts are more than 300, then set `substate_y=EVENT_TYPE_JOIN_WALK`.
+If we do have a pokemon then move on to gifts.
+
+There's something about waiting an hour, not sure about this.
+First read `route_info` from eeprom and find if we have an item slot free.
+- If we have a free slow, pokemon happiness > 90 and we have >=500 watts then set `substate_y=EVENT_TYPE_ITEM`.
+- Else if pokemon happiness > 80 and we have >=250 watts then set `susbtate_y=EVENT_TYPE_50_WATTS`.
+- Else if we have >=200 watts then set `substate_y=EVENT_TYPE_20_WATTS`.
+- Else if we have >=100 watts then set `substate_y=EVENT_TYPE_10_WATTS`.
+- Else if we have >=50 watts and `health_data.walk_minute_counter`>=60 then `substate_y=EVENT_TYPE_NO_GIFT`.
+- Else no event
+
+Next in the spash state in normal event mode (and for one(?) cycle of sleep mode), check if `substate_z` is nonzero.
+If it is, it means we have a random event, so we run `handle_random_splash_event` on button press.
+This uses `event_type` parameter to index into a pointer table `random_event_table` and sets `substate_b`.
+`substate_b` now points to an array of data/instructions corresponding to the event type chosen.
+The data/instructions just outline whether or not to draw a pokemon sprite, item sprite, which message to display,
+what to say we found, which emote/face to display, which sound to play and whether we should go back to the splash screen.
+Each "step" is 4 bytes and `substate_b` moves along 4 bytes at a time until dialogue is over.
+
+Next `handle_random_splash_event` sets the current substate to `0x0c random_gift_state`.
+It zeroes the `seconds_counter` and then proceeds to perform the action the `event_type` describes.
+- If event is for an item, item index is calculated by `max(0,9-watts/500)`, where 0 is rarest item.
+    Then finds a free slot and adds the item. if there are no free slots then don't add an item.
+- If event is for watts, call `add_watts` function with the right number of watts and writes it to `substate_z`.
+- Otherwise, zero `substate_z`
+Next write a log event for the random event.
+Log event index is `0x10+EVENT_TYPE`, extra info is `item_id` (nothing for watts).
+
+If the event type was either for watts or no gift, then set `substate_a = (rand()>>3)%3`, else zero it.
+This is to display a "random" mood message on the screen.
+
+Now in `random_gift_state` event loop, on button press check if bit 0 of the data pointed to by `substate_b` is set.
+If it is, go to splash screen, else play sound id stored in `substate_b[1]` and move `substate_b` to point to next 
+set of 4 bytes.
+
+Finally, draw the state depending on what flags are set in the `substate_b` data array.
+Use `draw_large_message` with an index of `substate_b[3]` (+`substate_a` if told) to display the "found" and "is happy" messages etc.
+
+Eventually, go back to splash screen once dialogue is done.
+
+---
 
 ## Analysis of `0x5d52 handle_random_splash_event`
 
