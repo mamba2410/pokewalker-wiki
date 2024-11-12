@@ -10,6 +10,7 @@
     - [Walk Start](behaviour/walk_start.md)
     - [Walk End](behaviour/walk_end.md)
     - [Walker Initialisation](behaviour/walker_init.md)
+    - [Peer Play](behaviour/peer_play.md)
     - [Event Logging](behaviour/event_log.md)
     - [Radar Bush Game](behaviour/radar_bush_game.md)
     - [PokeRadar](behaviour/poke_radar.md)
