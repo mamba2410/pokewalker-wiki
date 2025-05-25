@@ -13,6 +13,50 @@ r1h = boolean isOnSpecialEventRoute
 e1 = extraInfo (eg: item type)
 [sp] = u8 pushed as u16, availablePokeIdx(1..3 are route availables, 4 is event poke, 0 for N/A)
 
+## Better notes on log_event
+
+- Reads next event write location(index stored in `ram_health_data.event_log_idx`)
+- If read event is zero, write new event
+- If this event is "fell asleep", then drop it
+- Otherwise, log event. So all events are valid, unless you're logging a "fell asleep" event after a nonzero event
+- If we're going to overwrite the walk start event, don't do that and increment index (r4) again
+- Zero event struct when incoming event type is <= 10
+- Copies the following information into the struct:
+  - incoming event type
+  - extra info from e1
+  - `ram_health_data.last_sync`
+  - `watts_gained_since_last_sync`
+  - `current_steps`
+  - walking pokemon's species from `route_info`
+  - walking pokemon's nickname from `route_info`
+  - walking pokemon's friendship from `route_info`
+  - Pokemon flag shenanegans (best I can decipher, there's a lot of redundant stuff?)
+    `lip.opf = (lip.opf&0xe0) | (ri.ps.f1&0x1f)`
+    `insert_val = ((ri.ps.f1>>5)&0x03)`
+    `bitfield_insert(le.opf, insert_val, 2 bits, << 1)`
+    `lip.opf |= (ri.ps.f2&0x02)<<6`
+  - If not on special route:
+    - route image index
+    - route name
+  - Else
+    - copy route image index from `0xbf06`
+    - copy route name from `0xbf50`
+  - If `pokemon_idx` is a route pokemon:
+    - copy species to `lip.their_species`
+    - do same flags shenanegans as for ours above, without orring f2
+  - Else (is either our pokemon again, likely joined, or a special pokemon)
+    - If its ours, do nothing?
+    - We know its a special pokemon, so:
+    - If event type is 0x0f or 0x10 (pokemon ran or lost)
+      - Copy species from 0xbf08
+    - Else
+      - Copy species from 0xba44
+    - read special pokemon flags from 0xbf0d
+    - do same shenanegans, withour orring f2
+  - Write to address using existing index
+  - circularly increment `ram_health_data.event_log_index` (with 23 as denominator)
+  - reliably write `ram_health_data`
+
 ## notes on the decomp of logEvent
 
 - we have a log set up to write (apparently)
